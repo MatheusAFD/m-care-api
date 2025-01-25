@@ -14,6 +14,6 @@ COPY . .
 
 COPY tsconfig.json ./
 
-RUN  pnpm install
+RUN  pnpm install && pnpm db:generate
 
 CMD ["pnpm", "start:dev"]
