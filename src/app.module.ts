@@ -1,10 +1,12 @@
-import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { Module } from '@nestjs/common'
+import { ConfigModule } from '@nestjs/config'
+import { AppController } from './app.controller'
+import { AppService } from './app.service'
+import { DrizzleModule } from './modules/drizzle/drizzle.module'
 
 @Module({
-  imports: [],
+  imports: [DrizzleModule, ConfigModule.forRoot({ isGlobal: true })],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService]
 })
 export class AppModule {}
