@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common'
 import { NodePgDatabase } from 'drizzle-orm/node-postgres'
 import { DrizzleAsyncProvider } from './drizzle/drizzle.provider'
-import * as schema from './drizzle/schema'
+import * as schema from './drizzle/schema/users'
 
 @Injectable()
 export class AppService {
@@ -15,7 +15,7 @@ export class AppService {
   }
 
   async getSchema() {
-    const data = await this.db.query.schema.findMany({})
+    const data = await this.db.query.users.findMany({})
 
     return data
   }
