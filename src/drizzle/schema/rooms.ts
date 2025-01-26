@@ -1,16 +1,19 @@
-import { pgTable, varchar, text, uuid } from 'drizzle-orm/pg-core'
+import { pgTable, varchar, text } from 'drizzle-orm/pg-core'
 import { relations } from 'drizzle-orm'
 
 import { units } from '.'
-import { StatusEnum } from 'src/enums'
-import { timestamps } from 'src/utils'
+
+import { timestamps } from 'src/common/utils'
+import { createCustomId } from 'src/common/lib'
 
 export const rooms = pgTable('rooms', {
-  id: uuid('id').primaryKey(),
+  id: text('id')
+    .primaryKey()
+    .$default(() => createCustomId()),
   name: text('name').notNull(),
   floor: text('floor').notNull(),
   unitId: varchar('unit_id').notNull(),
-  status: text('status').$type<StatusEnum>().notNull(),
+  status: text('status').notNull(),
   ...timestamps
 })
 
