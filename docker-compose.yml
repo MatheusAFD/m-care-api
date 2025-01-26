@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3.8'
 
 services:
   api:
@@ -10,7 +10,7 @@ services:
       target: development
     env_file:
       - .env
-    command: sh -c "pnpm db:migrate && pnpm start:dev "
+    command: sh -c "pnpm install && pnpm db:migrate && pnpm start:dev "
     ports:
       - ${NEST_API_PORT}:${NEST_API_PORT}
       - 9229:9229

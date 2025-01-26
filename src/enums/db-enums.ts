@@ -1,16 +1,16 @@
-export enum RoleEnum {
-  'USER' = 'USER',
-  'ADMIN' = 'ADMIN',
-  'SUPER_ADMIN' = 'SUPER_ADMIN'
-}
+export const RoleEnum = {
+  USER: 'USER',
+  ADMIN: 'ADMIN',
+  SUPER_ADMIN: 'SUPER_ADMIN'
+} as const
 
-export enum StatusEnum {
-  'ACTIVE' = 'active',
-  'INACTIVE' = 'inactive'
-}
+export const StatusEnum = {
+  ACTIVE: 'active',
+  INACTIVE: 'inactive'
+} as const
 
-export enum GenreEnum {
-  'MALE' = 'male',
-  'FEMALE' = 'female',
-  'OTHER' = 'other'
-}
+export const GenreEnum = {
+  MALE: 'male',
+  FEMALE: 'female',
+  OTHER: 'other'
+} as const

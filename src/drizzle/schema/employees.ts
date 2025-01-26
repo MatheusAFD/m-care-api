@@ -1,14 +1,17 @@
-import { pgTable, varchar, text, uuid } from 'drizzle-orm/pg-core'
+import { pgTable, varchar, text } from 'drizzle-orm/pg-core'
 import { relations } from 'drizzle-orm'
 
+import { timestamps } from 'src/common/utils'
+
 import { users, companies } from '.'
-import { StatusEnum } from 'src/enums'
-import { timestamps } from 'src/utils'
+import { createCustomId } from 'src/common/lib'
 
 export const employees = pgTable('employees', {
-  id: uuid('id').primaryKey(),
+  id: text('id')
+    .primaryKey()
+    .$default(() => createCustomId()),
   name: text('name').notNull(),
-  status: text('status').$type<StatusEnum>().notNull(),
+  status: text('status').notNull(),
   color: text('color').notNull(),
   userId: varchar('user_id').unique().notNull(),
   companyId: varchar('company_id').notNull(),
