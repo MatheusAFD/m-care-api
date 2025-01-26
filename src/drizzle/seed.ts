@@ -24,7 +24,7 @@ async function main() {
     const superAdminRole = await tx
       .select()
       .from(schema.roles)
-      .where(sql`(${schema.roles.type}) like 'SUPER_ADMIN'`)
+      .where(sql`(${schema.roles.type}) = 'SUPER_ADMIN'`)
       .limit(1)
 
     if (!superAdminRole[0]) {
@@ -42,7 +42,7 @@ async function main() {
     const plan = await tx
       .select()
       .from(schema.plans)
-      .where(sql`(${schema.plans.name} like 'Trial')`)
+      .where(sql`(${schema.plans.name} = 'Trial')`)
       .limit(1)
 
     if (!plan[0]) {
@@ -59,7 +59,7 @@ async function main() {
     const createdCompany = await tx
       .select()
       .from(schema.companies)
-      .where(sql`(${schema.companies.name}) like 'Grupo Nobre'`)
+      .where(sql`(${schema.companies.name}) = 'Grupo Nobre'`)
       .limit(1)
 
     await tx.insert(schema.activeCompanyPlans).values({
