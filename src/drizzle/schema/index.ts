@@ -1,8 +1,13 @@
-export { users } from './users'
-export { companies } from './companies'
-export { plans } from './plans'
-export { activeCompanyPlans } from './activeCompanyPlans'
-export { employees } from './employees'
-export { roles } from './roles'
-export { rooms } from './rooms'
-export { units } from './unities'
+export { pgGenreEnum, pgRoleEnum, pgStatusEnum } from '../../enums/db-enums'
+
+export { users, usersRelations } from './users'
+export { companies, companiesRelations } from './companies'
+export { plans, plansRelations } from './plans'
+export {
+  activeCompanyPlans,
+  activeCompanyPlansRelations
+} from './activeCompanyPlans'
+export { employees, employeesRelations } from './employees'
+export { roles, rolesRelations } from './roles'
+export { rooms, roomsRelations } from './rooms'
+export { units, unitsRelations } from './unities'

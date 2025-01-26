@@ -1,19 +1,22 @@
-import { pgTable, varchar, text, timestamp, uuid } from 'drizzle-orm/pg-core'
+import { pgTable, varchar, text, timestamp } from 'drizzle-orm/pg-core'
 import { relations } from 'drizzle-orm'
 
-import { companies, roles, employees } from '.'
-import { GenreEnum } from 'src/enums'
-import { timestamps } from 'src/utils'
+import { companies, employees, roles } from './'
+
+import { createCustomId } from 'src/common/lib'
+import { timestamps } from 'src/common/utils'
 
 export const users = pgTable('users', {
-  id: uuid('id').primaryKey(),
+  id: text('id')
+    .primaryKey()
+    .$default(() => createCustomId()),
   name: text('name').notNull(),
   email: text('email').unique().notNull(),
   password: text('password').notNull(),
   companyId: varchar('company_id').notNull(),
   roleId: varchar('role_id').notNull(),
   birthday: timestamp('birthday'),
-  genre: text('genre').$type<GenreEnum>(),
+  genre: text('genre'),
   ...timestamps
 })
 

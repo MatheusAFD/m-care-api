@@ -1,11 +1,15 @@
-import { pgTable, text, boolean, uuid } from 'drizzle-orm/pg-core'
+import { pgTable, text, boolean } from 'drizzle-orm/pg-core'
 import { relations } from 'drizzle-orm'
 
-import { units, users, employees } from '.'
-import { timestamps } from 'src/utils'
+import { createCustomId } from 'src/common/lib'
+import { timestamps } from 'src/common/utils'
+
+import { units, users, employees } from './'
 
 export const companies = pgTable('companies', {
-  id: uuid('id').primaryKey(),
+  id: text('id')
+    .primaryKey()
+    .$default(() => createCustomId()),
   name: text('name').notNull(),
   cnpj: text('cnpj'),
   cpf: text('cpf'),
