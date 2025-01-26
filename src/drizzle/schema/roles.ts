@@ -6,11 +6,13 @@ import { users } from '.'
 import { timestamps } from 'src/common/utils'
 import { createCustomId } from 'src/common/lib'
 
+import { pgRoleEnum } from 'src/enums'
+
 export const roles = pgTable('roles', {
   id: text('id')
     .primaryKey()
     .$default(() => createCustomId()),
-  type: text('type').unique().notNull(),
+  type: pgRoleEnum().unique().notNull(),
   ...timestamps
 })
 

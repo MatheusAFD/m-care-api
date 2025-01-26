@@ -5,6 +5,7 @@ import { units } from '.'
 
 import { timestamps } from 'src/common/utils'
 import { createCustomId } from 'src/common/lib'
+import { pgStatusEnum } from 'src/enums'
 
 export const rooms = pgTable('rooms', {
   id: text('id')
@@ -13,7 +14,7 @@ export const rooms = pgTable('rooms', {
   name: text('name').notNull(),
   floor: text('floor').notNull(),
   unitId: varchar('unit_id').notNull(),
-  status: text('status').notNull(),
+  status: pgStatusEnum().notNull(),
   ...timestamps
 })
 

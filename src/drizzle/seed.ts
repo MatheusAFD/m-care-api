@@ -1,9 +1,11 @@
 import { drizzle } from 'drizzle-orm/node-postgres'
+import { sql } from 'drizzle-orm'
+import { env } from 'env'
+
 import * as schema from './schema'
 
 import { encryptData } from 'src/common/utils/encrypt-data'
-import { sql } from 'drizzle-orm'
-import { env } from 'env'
+import { RoleEnum } from 'src/enums'
 
 async function main() {
   const db = drizzle(process.env.DATABASE_URL!)
@@ -13,12 +15,16 @@ async function main() {
   await db.transaction(async (tx) => {
     await tx
       .insert(schema.roles)
-      .values([{ type: 'USER' }, { type: 'ADMIN' }, { type: 'SUPER_ADMIN' }])
+      .values([
+        { type: RoleEnum.USER },
+        { type: RoleEnum.ADMIN },
+        { type: RoleEnum.SUPER_ADMIN }
+      ])
 
     const superAdminRole = await tx
       .select()
       .from(schema.roles)
-      .where(sql`(${schema.roles.type}) like 'SUPER_ADMIN'`)
+      .where(sql`(${schema.roles.type}) = 'SUPER_ADMIN'`)
       .limit(1)
 
     if (!superAdminRole[0]) {
@@ -36,7 +42,7 @@ async function main() {
     const plan = await tx
       .select()
       .from(schema.plans)
-      .where(sql`(${schema.plans.name} like 'Trial')`)
+      .where(sql`(${schema.plans.name} = 'Trial')`)
       .limit(1)
 
     if (!plan[0]) {
@@ -53,7 +59,7 @@ async function main() {
     const createdCompany = await tx
       .select()
       .from(schema.companies)
-      .where(sql`(${schema.companies.name}) like 'Grupo Nobre'`)
+      .where(sql`(${schema.companies.name}) = 'Grupo Nobre'`)
       .limit(1)
 
     await tx.insert(schema.activeCompanyPlans).values({
