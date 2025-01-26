@@ -4,15 +4,19 @@ import {
   timestamp,
   integer,
   boolean,
-  uuid
+  text
 } from 'drizzle-orm/pg-core'
 import { relations } from 'drizzle-orm'
 
-import { plans, companies } from '.'
-import { timestamps } from 'src/utils'
+import { createCustomId } from 'src/common/lib'
+import { timestamps } from 'src/common/utils'
+
+import { plans, companies } from './'
 
 export const activeCompanyPlans = pgTable('active_company_plans', {
-  id: uuid('id').primaryKey(),
+  id: text('id')
+    .primaryKey()
+    .$default(() => createCustomId()),
   startDate: timestamp('start_date').notNull(),
   endDate: timestamp('end_date').notNull(),
   isActive: boolean('is_active').notNull(),

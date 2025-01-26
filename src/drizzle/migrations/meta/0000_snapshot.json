@@ -1,5 +1,5 @@
 {
-  "id": "854617f1-cbf0-4faa-99b3-98abab733fb5",
+  "id": "908db4d6-91ae-40fc-a99f-a6eeabfc140d",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -10,7 +10,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "varchar(36)",
+          "type": "text",
           "primaryKey": true,
           "notNull": true
         },
@@ -40,13 +40,13 @@
         },
         "plan_id": {
           "name": "plan_id",
-          "type": "varchar(36)",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": true
         },
         "company_id": {
           "name": "company_id",
-          "type": "varchar(36)",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": true
         },
@@ -92,7 +92,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "varchar(36)",
+          "type": "text",
           "primaryKey": true,
           "notNull": true
         },
@@ -154,7 +154,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "varchar(36)",
+          "type": "text",
           "primaryKey": true,
           "notNull": true
         },
@@ -166,7 +166,8 @@
         },
         "status": {
           "name": "status",
-          "type": "text",
+          "type": "status",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
         },
@@ -178,13 +179,13 @@
         },
         "user_id": {
           "name": "user_id",
-          "type": "varchar(36)",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": true
         },
         "company_id": {
           "name": "company_id",
-          "type": "varchar(36)",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": true
         },
@@ -230,7 +231,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "varchar(36)",
+          "type": "text",
           "primaryKey": true,
           "notNull": true
         },
@@ -298,19 +299,25 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "varchar(36)",
+          "type": "text",
           "primaryKey": true,
           "notNull": true
         },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp",
+        "type": {
+          "name": "type",
+          "type": "role",
+          "typeSchema": "public",
           "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
+          "notNull": true
         },
         "updated_at": {
           "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
@@ -321,12 +328,6 @@
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false
-        },
-        "type": {
-          "name": "type",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
         }
       },
       "indexes": {},
@@ -351,7 +352,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "varchar(36)",
+          "type": "text",
           "primaryKey": true,
           "notNull": true
         },
@@ -369,13 +370,14 @@
         },
         "unit_id": {
           "name": "unit_id",
-          "type": "varchar(36)",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": true
         },
         "status": {
           "name": "status",
-          "type": "text",
+          "type": "status",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
         },
@@ -413,7 +415,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "varchar(36)",
+          "type": "text",
           "primaryKey": true,
           "notNull": true
         },
@@ -443,13 +445,14 @@
         },
         "company_id": {
           "name": "company_id",
-          "type": "varchar(36)",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": true
         },
         "status": {
           "name": "status",
-          "type": "text",
+          "type": "status",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
         },
@@ -493,7 +496,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "varchar(36)",
+          "type": "text",
           "primaryKey": true,
           "notNull": true
         },
@@ -517,13 +520,13 @@
         },
         "company_id": {
           "name": "company_id",
-          "type": "varchar(36)",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": true
         },
         "role_id": {
           "name": "role_id",
-          "type": "varchar(36)",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": true
         },
@@ -576,7 +579,34 @@
       "isRLSEnabled": false
     }
   },
-  "enums": {},
+  "enums": {
+    "public.genre": {
+      "name": "genre",
+      "schema": "public",
+      "values": [
+        "MALE",
+        "FEMALE",
+        "OTHER"
+      ]
+    },
+    "public.role": {
+      "name": "role",
+      "schema": "public",
+      "values": [
+        "USER",
+        "ADMIN",
+        "SUPER_ADMIN"
+      ]
+    },
+    "public.status": {
+      "name": "status",
+      "schema": "public",
+      "values": [
+        "INACTIVE",
+        "INACTIVE"
+      ]
+    }
+  },
   "schemas": {},
   "sequences": {},
   "roles": {},

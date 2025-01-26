@@ -1,1 +1,3 @@
-export type { GenreEnum, RoleEnum, StatusEnum } from './db-enums'
+export { GenreEnum, RoleEnum, StatusEnum } from './db-enums'
+
+export { pgGenreEnum, pgRoleEnum, pgStatusEnum } from './db-enums'
