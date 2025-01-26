@@ -1,6 +1,6 @@
 CREATE TYPE "public"."genre" AS ENUM('MALE', 'FEMALE', 'OTHER');--> statement-breakpoint
 CREATE TYPE "public"."role" AS ENUM('USER', 'ADMIN', 'SUPER_ADMIN');--> statement-breakpoint
-CREATE TYPE "public"."status" AS ENUM('INACTIVE', 'INACTIVE');--> statement-breakpoint
+CREATE TYPE "public"."status" AS ENUM('INACTIVE', 'ACTIVE');--> statement-breakpoint
 CREATE TABLE "active_company_plans" (
 	"id" text PRIMARY KEY NOT NULL,
 	"start_date" timestamp NOT NULL,
