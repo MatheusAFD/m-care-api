@@ -1,4 +1,8 @@
-export { pgGenreEnum, pgRoleEnum, pgStatusEnum } from '../../enums/db-enums'
+export {
+  pgGenreEnum,
+  pgRoleEnum,
+  pgStatusEnum
+} from '../../common/enums/db-enums'
 
 export { users, usersRelations } from './users'
 export { companies, companiesRelations } from './companies'

@@ -7,3 +7,7 @@ export async function encryptData(data: string) {
 
   return hashedData
 }
+
+export const compareEncryptValue = async (encrypted: string, value: string) => {
+  return await bcrypt.compare(value, encrypted)
+}
