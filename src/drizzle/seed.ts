@@ -4,8 +4,8 @@ import { env } from 'env'
 
 import * as schema from './schema'
 
-import { encryptData } from 'src/common/utils/encrypt-data'
-import { RoleEnum } from 'src/enums'
+import { RoleEnum } from 'src/common/enums'
+import { encryptData } from 'src/common/lib'
 
 async function main() {
   const db = drizzle(process.env.DATABASE_URL!)

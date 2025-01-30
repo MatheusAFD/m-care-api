@@ -1,12 +1,10 @@
 import { pgTable, varchar, text } from 'drizzle-orm/pg-core'
 import { relations } from 'drizzle-orm'
 
-import { companies, rooms } from '.'
+import { companies, rooms, pgStatusEnum } from '.'
 
 import { timestamps } from 'src/common/utils'
 import { createCustomId } from 'src/common/lib'
-
-import { pgStatusEnum } from 'src/enums'
 
 export const units = pgTable('units', {
   id: text('id')
