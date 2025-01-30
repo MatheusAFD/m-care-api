@@ -3,6 +3,8 @@
 /node_modules
 /build
 
+.pnpm-store
+
 # Logs
 logs
 *.log
@@ -22,6 +24,7 @@ lerna-debug.log*
 # IDEs and editors
 /.idea
 .project
+.vscode
 .classpath
 .c9/
 *.launch

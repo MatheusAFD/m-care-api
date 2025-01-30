@@ -1,8 +1,29 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common'
+import { NodePgDatabase } from 'drizzle-orm/node-postgres'
+import { DrizzleAsyncProvider } from './drizzle/drizzle.provider'
+import * as schema from './drizzle/schema/'
 
 @Injectable()
 export class AppService {
+  constructor(
+    @Inject(DrizzleAsyncProvider)
+    private db: NodePgDatabase<typeof schema>
+  ) {}
+
   getHello(): string {
-    return 'Hello World!';
+    return 'Hello World!'
+  }
+
+  async getSchema() {
+    return await this.db.query.users.findMany({
+      with: {
+        role: {
+          columns: {
+            id: true,
+            type: true
+          }
+        }
+      }
+    })
   }
 }
