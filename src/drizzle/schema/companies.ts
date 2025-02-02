@@ -1,5 +1,5 @@
-import { pgTable, text, boolean } from 'drizzle-orm/pg-core'
 import { relations } from 'drizzle-orm'
+import { pgTable, text, boolean } from 'drizzle-orm/pg-core'
 
 import { createCustomId } from 'src/common/lib'
 import { timestamps } from 'src/common/utils'
@@ -14,6 +14,7 @@ export const companies = pgTable('companies', {
   cnpj: text('cnpj'),
   cpf: text('cpf'),
   isActive: boolean('is_active').notNull(),
+  stripeCustomerId: text('stripe_customer_id').notNull(),
   ...timestamps
 })
 

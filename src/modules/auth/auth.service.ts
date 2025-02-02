@@ -2,18 +2,20 @@ import { Inject, Injectable, NotFoundException } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 
 import { eq } from 'drizzle-orm'
-import { NodePgDatabase } from 'drizzle-orm/node-postgres'
-import { compareEncryptValue } from 'src/common/lib'
+
 import { DrizzleAsyncProvider } from 'src/drizzle/drizzle.provider'
 
-import * as schema from '../../drizzle/schema'
+import { DrizzleSchema } from '@db/drizzle/types'
+
+import { compareEncryptValue } from '@common/lib'
+
 import { SigninDTO } from './dto/sign-in.dto'
 
 @Injectable()
 export class AuthService {
   constructor(
     @Inject(DrizzleAsyncProvider)
-    private readonly db: NodePgDatabase<typeof schema>,
+    private readonly db: DrizzleSchema,
     private readonly jwtService: JwtService
   ) {}
 
@@ -43,16 +45,11 @@ export class AuthService {
     }
 
     return {
-      accessToken: this.jwtService.sign(
-        {
-          id: user.id,
-          role: user.role,
-          companyId: user.companyId
-        },
-        {
-          secret: process.env.JWT_SECRET
-        }
-      )
+      accessToken: this.jwtService.sign({
+        id: user.id,
+        role: user.role,
+        companyId: user.companyId
+      })
     }
   }
 }
