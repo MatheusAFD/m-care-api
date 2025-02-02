@@ -10,12 +10,14 @@ import { DrizzleModule } from '@modules/drizzle/drizzle.module'
 
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
+import { PaymentsModule } from './modules/payments/payments.module'
 
 @Module({
   imports: [
     DrizzleModule,
     ConfigModule.forRoot({ isGlobal: true }),
-    AuthModule
+    AuthModule,
+    PaymentsModule
   ],
   controllers: [AppController],
   providers: [
