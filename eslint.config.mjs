@@ -39,8 +39,10 @@ export default tseslint.config(
         {
           newlinesBetween: 'always',
           groups: [
-            ['/^@nestjs/'],
+            '/^@nestjs/',
+            ['/^drizzle-orm/', '/^drizzle-kit/'],
             'module',
+            '/^@db/',
             '/^@modules/',
             '/^@common/',
             ['parent', 'sibling', 'index'],
