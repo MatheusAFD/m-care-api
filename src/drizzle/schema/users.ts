@@ -1,10 +1,10 @@
-import { pgTable, varchar, text, timestamp } from 'drizzle-orm/pg-core'
 import { relations } from 'drizzle-orm'
+import { pgTable, varchar, text, timestamp } from 'drizzle-orm/pg-core'
+
+import { createCustomId } from '@common/lib'
+import { timestamps } from '@common/utils'
 
 import { companies, employees, roles } from './'
-
-import { createCustomId } from 'src/common/lib'
-import { timestamps } from 'src/common/utils'
 
 export const users = pgTable('users', {
   id: text('id')

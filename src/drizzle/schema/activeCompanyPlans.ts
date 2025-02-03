@@ -1,3 +1,4 @@
+import { relations } from 'drizzle-orm'
 import {
   pgTable,
   varchar,
@@ -6,10 +7,9 @@ import {
   boolean,
   text
 } from 'drizzle-orm/pg-core'
-import { relations } from 'drizzle-orm'
 
-import { createCustomId } from 'src/common/lib'
-import { timestamps } from 'src/common/utils'
+import { createCustomId } from '@common/lib'
+import { timestamps } from '@common/utils'
 
 import { plans, companies } from './'
 
@@ -17,6 +17,7 @@ export const activeCompanyPlans = pgTable('active_company_plans', {
   id: text('id')
     .primaryKey()
     .$default(() => createCustomId()),
+  stripeSubscriptionId: text('stripe_subscription_id').notNull(),
   startDate: timestamp('start_date').notNull(),
   endDate: timestamp('end_date').notNull(),
   isActive: boolean('is_active').notNull(),

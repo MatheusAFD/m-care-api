@@ -8,6 +8,41 @@
       "when": 1737918195594,
       "tag": "0000_clean_the_hand",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1738284130819,
+      "tag": "0001_motionless_madrox",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1738284918588,
+      "tag": "0002_outstanding_kree",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1738451608910,
+      "tag": "0003_sharp_cloak",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1738536317619,
+      "tag": "0004_loving_layla_miller",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1738540542572,
+      "tag": "0005_clumsy_morgan_stark",
+      "breakpoints": true
     }
   ]
 }

@@ -1,0 +1,1 @@
+ALTER TABLE "companies" ALTER COLUMN "cnpj" SET NOT NULL;

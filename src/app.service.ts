@@ -1,13 +1,16 @@
 import { Inject, Injectable } from '@nestjs/common'
-import { NodePgDatabase } from 'drizzle-orm/node-postgres'
+
+import { eq, getTableColumns } from 'drizzle-orm'
+
 import { DrizzleAsyncProvider } from './drizzle/drizzle.provider'
-import * as schema from './drizzle/schema/'
+import { roles, users } from './drizzle/schema'
+import { DrizzleSchema } from './drizzle/types'
 
 @Injectable()
 export class AppService {
   constructor(
     @Inject(DrizzleAsyncProvider)
-    private db: NodePgDatabase<typeof schema>
+    private db: DrizzleSchema
   ) {}
 
   getHello(): string {
@@ -15,15 +18,17 @@ export class AppService {
   }
 
   async getSchema() {
-    return await this.db.query.users.findMany({
-      with: {
-        role: {
-          columns: {
-            id: true,
-            type: true
-          }
+    const data = await this.db
+      .select({
+        ...getTableColumns(users),
+        roles: {
+          id: roles.id,
+          type: roles.type
         }
-      }
-    })
+      })
+      .from(users)
+      .leftJoin(roles, eq(users.roleId, roles.id))
+
+    return data
   }
 }

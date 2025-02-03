@@ -1,22 +1,22 @@
-import { pgTable, varchar, text } from 'drizzle-orm/pg-core'
 import { relations } from 'drizzle-orm'
+import { pgTable, varchar, text } from 'drizzle-orm/pg-core'
+
+import { createCustomId } from '@common/lib'
+import { timestamps } from '@common/utils'
 
 import { companies, rooms, pgStatusEnum } from '.'
-
-import { timestamps } from 'src/common/utils'
-import { createCustomId } from 'src/common/lib'
 
 export const units = pgTable('units', {
   id: text('id')
     .primaryKey()
     .$default(() => createCustomId()),
+  name: text('name').notNull(),
   city: text('city').notNull(),
   state: text('state').notNull(),
   zipcode: text('zipcode').notNull(),
   number: text('number').notNull(),
   companyId: varchar('company_id').notNull(),
   status: pgStatusEnum().notNull(),
-  name: text('name').notNull(),
   ...timestamps
 })
 
