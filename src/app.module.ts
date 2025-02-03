@@ -10,6 +10,7 @@ import { DrizzleModule } from '@modules/drizzle/drizzle.module'
 
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
+import { CompaniesModule } from './modules/companies/companies.module'
 import { PaymentsModule } from './modules/payments/payments.module'
 
 @Module({
@@ -17,7 +18,8 @@ import { PaymentsModule } from './modules/payments/payments.module'
     DrizzleModule,
     ConfigModule.forRoot({ isGlobal: true }),
     AuthModule,
-    PaymentsModule
+    PaymentsModule,
+    CompaniesModule
   ],
   controllers: [AppController],
   providers: [
