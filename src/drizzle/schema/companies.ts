@@ -11,8 +11,8 @@ export const companies = pgTable('companies', {
     .primaryKey()
     .$default(() => createCustomId()),
   name: text('name').notNull(),
-  cnpj: text('cnpj'),
-  cpf: text('cpf'),
+  cnpj: text('cnpj').unique().notNull(),
+  cpf: text('cpf').unique(),
   isActive: boolean('is_active').notNull(),
   stripeCustomerId: text('stripe_customer_id').notNull(),
   ...timestamps
