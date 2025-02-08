@@ -1,4 +1,9 @@
-import { ForbiddenException, Inject, Injectable } from '@nestjs/common'
+import {
+  ForbiddenException,
+  Inject,
+  Injectable,
+  InternalServerErrorException
+} from '@nestjs/common'
 
 import { eq } from 'drizzle-orm'
 
@@ -70,8 +75,17 @@ export class CompaniesService {
 
         return { companyId: company.id, userId: user.id }
       })
+
+      return { success: true }
     } catch (error) {
-      return error
+      if (error instanceof ForbiddenException) {
+        throw error
+      }
+
+      throw new InternalServerErrorException(
+        'An error occurred while processing the request',
+        error.message
+      )
     }
   }
 }
