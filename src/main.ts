@@ -20,6 +20,6 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe())
 
-  await app.listen(env.NEST_API_PORT ?? 3000)
+  await app.listen(env.NEST_API_PORT ?? 4000)
 }
 bootstrap()
