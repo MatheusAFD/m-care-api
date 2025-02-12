@@ -1,5 +1,5 @@
-import { createId } from '@paralleldrive/cuid2'
+import { ulid } from 'ulid'
 
-const createCustomId = () => createId()
+const createCustomId = () => ulid()
 
 export { createCustomId }
