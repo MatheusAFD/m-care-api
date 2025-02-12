@@ -3,8 +3,8 @@ import { Controller, Get, Query } from '@nestjs/common'
 import { Roles } from '@common/decorators/auth'
 import { RoleEnum } from '@common/enums'
 
-import { PlansService } from './plans.service'
 import { GetPlansDTO } from './dto/get-plans.dto'
+import { PlansService } from './plans.service'
 
 @Controller('plans')
 export class PlansController {
