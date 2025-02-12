@@ -12,6 +12,7 @@ import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { CompaniesModule } from './modules/companies/companies.module'
 import { PaymentsModule } from './modules/payments/payments.module'
+import { PlansModule } from './modules/plans/plans.module';
 
 @Module({
   imports: [
@@ -19,7 +20,8 @@ import { PaymentsModule } from './modules/payments/payments.module'
     ConfigModule.forRoot({ isGlobal: true }),
     AuthModule,
     PaymentsModule,
-    CompaniesModule
+    CompaniesModule,
+    PlansModule
   ],
   controllers: [AppController],
   providers: [
