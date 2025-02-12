@@ -1,9 +1,10 @@
-import { Controller, Get } from '@nestjs/common'
+import { Controller, Get, Query } from '@nestjs/common'
 
 import { Roles } from '@common/decorators/auth'
 import { RoleEnum } from '@common/enums'
 
 import { PlansService } from './plans.service'
+import { GetPlansDTO } from './dto/get-plans.dto'
 
 @Controller('plans')
 export class PlansController {
@@ -11,7 +12,7 @@ export class PlansController {
 
   @Roles(RoleEnum.ADMIN, RoleEnum.SUPER_ADMIN)
   @Get()
-  findAll() {
-    return this.plansService.findAll()
+  findAll(@Query() query: GetPlansDTO) {
+    return this.plansService.findAll(query)
   }
 }
