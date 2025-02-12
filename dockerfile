@@ -4,16 +4,15 @@ WORKDIR /usr/src/app
 
 ENV NODE_OPTIONS=--max_old_space_size=4096
 
-COPY package*.json ./
-COPY pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml .npmrc* ./
 
 RUN apt-get update -y && apt-get install -y openssl && \
     npm install --global pnpm
 
+RUN pnpm i
+
 COPY . .
 
-COPY tsconfig.json ./
-
-RUN  rm -rf ./node_modules && pnpm install && pnpm db:generate
+RUN pnpm db:generate
 
 CMD ["pnpm", "start:dev"]
