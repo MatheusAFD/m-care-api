@@ -43,7 +43,12 @@ async function main() {
       price: '30',
       duration: 30,
       isFree: true,
-      isTrial: true
+      isTrial: true,
+      limitations: {
+        maxEmployees: 1,
+        maxRooms: 1,
+        maxUnits: 1
+      }
     })
 
     const plan = await tx
