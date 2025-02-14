@@ -1,0 +1,1 @@
+ALTER TABLE "plans" ADD COLUMN "limitations" json DEFAULT '{"maxEmployees":1,"maxRooms":1,"maxUnits":1}'::json NOT NULL;

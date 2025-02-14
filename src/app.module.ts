@@ -6,13 +6,13 @@ import { JwtService } from '@nestjs/jwt'
 import { AuthModule } from '@modules/auth/auth.module'
 import { JwtAuthGuard } from '@modules/auth/jwt-auth.guard'
 import { RolesGuard } from '@modules/auth/role.guard'
+import { CompaniesModule } from '@modules/companies/companies.module'
 import { DrizzleModule } from '@modules/drizzle/drizzle.module'
+import { PaymentsModule } from '@modules/payments/payments.module'
+import { PlansModule } from '@modules/plans/plans.module'
 
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
-import { CompaniesModule } from './modules/companies/companies.module'
-import { PaymentsModule } from './modules/payments/payments.module'
-import { PlansModule } from './modules/plans/plans.module';
 
 @Module({
   imports: [

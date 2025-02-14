@@ -9,6 +9,7 @@ import { DrizzleSchema } from '@db/drizzle/types'
 import { StatusEnum } from '@common/enums'
 
 import { GetPlansDTO } from './dto/get-plans.dto'
+import { Plan } from './entities/plan.entity'
 
 @Injectable()
 export class PlansService {
@@ -17,7 +18,7 @@ export class PlansService {
     private readonly db: DrizzleSchema
   ) {}
 
-  async findAll(query: GetPlansDTO) {
+  async findAll(query: GetPlansDTO): Promise<Plan[]> {
     const { status } = query
 
     const allPLans = await this.db
