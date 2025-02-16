@@ -27,11 +27,7 @@ export class PaymentsEventstGateway {
     void client.join(data.companyId)
   }
 
-  emitCompanyActivated(companyId: string, event: string) {
-    this.server.to(companyId).emit('companyActivated', { companyId, event })
-  }
-
-  emitCompanyInactivated(companyId: string, event: string) {
-    this.server.to(companyId).emit('companyInactivated', { companyId, event })
+  emitPaymentStatus(companyId: string, event: string) {
+    this.server.to(companyId).emit('payment-status', { companyId, event })
   }
 }

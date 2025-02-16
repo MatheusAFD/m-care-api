@@ -41,7 +41,7 @@ export class WebhookService {
       })
       .where(eq(activeCompanyPlans.companyId, company.id))
 
-    this.paymentsWebsocketService.emitPaymentSuccessful(company.id, event)
+    this.paymentsWebsocketService.emitPaymentStatus(company.id, event)
   }
 
   async handlePaymentFailed(customerId: string, event: string) {
@@ -72,6 +72,6 @@ export class WebhookService {
         .where(eq(activeCompanyPlans.companyId, company.id))
     })
 
-    this.paymentsWebsocketService.emitPaymentFailed(company.id, event)
+    this.paymentsWebsocketService.emitPaymentStatus(company.id, event)
   }
 }
