@@ -4,7 +4,7 @@ import { pgTable, text, boolean } from 'drizzle-orm/pg-core'
 import { createCustomId } from 'src/common/lib'
 import { timestamps } from 'src/common/utils'
 
-import { units, users, employees } from './'
+import { units, users, employees, activeCompanyPlans } from './'
 
 export const companies = pgTable('companies', {
   id: text('id')
@@ -18,8 +18,9 @@ export const companies = pgTable('companies', {
   ...timestamps
 })
 
-export const companiesRelations = relations(companies, ({ many }) => ({
+export const companiesRelations = relations(companies, ({ many, one }) => ({
   units: many(units),
   users: many(users),
-  employees: many(employees)
+  employees: many(employees),
+  activeCompanyPlans: one(activeCompanyPlans)
 }))
