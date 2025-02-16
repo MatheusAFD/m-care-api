@@ -14,4 +14,4 @@ export {
 export { employees, employeesRelations } from './employees'
 export { roles, rolesRelations } from './roles'
 export { rooms, roomsRelations } from './rooms'
-export { units, unitsRelations } from './unities'
+export { units, unitsRelations } from './units'
