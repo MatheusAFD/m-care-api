@@ -6,7 +6,11 @@ import { PaymentsEventstGateway } from './payments-events.gateway'
 export class PaymentsEventsService {
   constructor(private readonly gateway: PaymentsEventstGateway) {}
 
-  emitCompanyActivated(companyId: string) {
-    this.gateway.emitCompanyActivated(companyId)
+  emitPaymentSuccessful(companyId: string, event: string) {
+    this.gateway.emitCompanyActivated(companyId, event)
+  }
+
+  emitPaymentFailed(companyId: string, event: string) {
+    this.gateway.emitCompanyInactivated(companyId, event)
   }
 }

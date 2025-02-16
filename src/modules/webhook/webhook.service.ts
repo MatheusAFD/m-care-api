@@ -6,7 +6,7 @@ import { env } from 'env'
 import Stripe from 'stripe'
 
 import { DrizzleAsyncProvider } from '@db/drizzle/drizzle.provider'
-import { activeCompanyPlans } from '@db/drizzle/schema'
+import { activeCompanyPlans, companies } from '@db/drizzle/schema'
 import { DrizzleSchema } from '@db/drizzle/types'
 
 import { PaymentsEventsService } from '@modules/websocket/payments-events/payments-events.service'
@@ -22,9 +22,7 @@ export class WebhookService {
     this.stripe = new Stripe(env.STRIPE_SECRET_KEY)
   }
 
-  async handleSuccessfulPayment(customerId: string) {
-    console.log('✅ Processando pagamento:', customerId)
-
+  async handleSuccessfulPayment(customerId: string, event: string) {
     const company = await this.db.query.companies.findFirst({
       with: {
         activeCompanyPlans: true
@@ -33,7 +31,7 @@ export class WebhookService {
     })
 
     if (!company) {
-      throw new NotFoundException('Empresa não encontrada')
+      throw new NotFoundException('company not found')
     }
 
     await this.db
@@ -43,8 +41,37 @@ export class WebhookService {
       })
       .where(eq(activeCompanyPlans.companyId, company.id))
 
-    this.paymentsWebsocketService.emitCompanyActivated(company.id)
+    this.paymentsWebsocketService.emitPaymentSuccessful(company.id, event)
+  }
 
-    console.log('✅ Plano atualizado com sucesso para a empresa:', company.id)
+  async handlePaymentFailed(customerId: string, event: string) {
+    const company = await this.db.query.companies.findFirst({
+      with: {
+        activeCompanyPlans: true
+      },
+      where: (company) => eq(company.stripeCustomerId, customerId)
+    })
+
+    if (!company) {
+      throw new NotFoundException('company not found')
+    }
+
+    await this.db.transaction(async (tx) => {
+      await tx
+        .update(companies)
+        .set({
+          isActive: false
+        })
+        .where(eq(companies.id, company.id))
+
+      await tx
+        .update(activeCompanyPlans)
+        .set({
+          isActive: false
+        })
+        .where(eq(activeCompanyPlans.companyId, company.id))
+    })
+
+    this.paymentsWebsocketService.emitPaymentFailed(company.id, event)
   }
 }
