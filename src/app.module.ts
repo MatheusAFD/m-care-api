@@ -10,6 +10,8 @@ import { CompaniesModule } from '@modules/companies/companies.module'
 import { DrizzleModule } from '@modules/drizzle/drizzle.module'
 import { PaymentsModule } from '@modules/payments/payments.module'
 import { PlansModule } from '@modules/plans/plans.module'
+import { WebhookModule } from '@modules/webhook/webhook.module'
+import { PaymentsEventsModule } from '@modules/websocket/payments-events/payments-events.module'
 
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
@@ -21,7 +23,9 @@ import { AppService } from './app.service'
     AuthModule,
     PaymentsModule,
     CompaniesModule,
-    PlansModule
+    PlansModule,
+    WebhookModule,
+    PaymentsEventsModule
   ],
   controllers: [AppController],
   providers: [
