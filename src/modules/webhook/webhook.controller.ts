@@ -38,7 +38,6 @@ export class WebhookController {
         endpointSecret
       )
     } catch (err) {
-      console.error('⚠️  Erro na verificação do webhook:', err.message)
       return res
         .status(HttpStatus.BAD_REQUEST)
         .send(`Webhook Error: ${err.message}`)
@@ -47,8 +46,20 @@ export class WebhookController {
     switch (event.type) {
       case 'payment_intent.succeeded': {
         const paymentIntent = event.data.object as Stripe.PaymentIntent
+
         await this.webhookService.handleSuccessfulPayment(
-          paymentIntent.customer as string
+          String(paymentIntent.customer),
+          event.type
+        )
+        break
+      }
+
+      case 'payment_intent.payment_failed': {
+        const paymentIntent = event.data.object as Stripe.PaymentIntent
+
+        await this.webhookService.handlePaymentFailed(
+          String(paymentIntent.customer),
+          event.type
         )
         break
       }
