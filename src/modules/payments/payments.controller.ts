@@ -3,7 +3,7 @@ import { Body, Controller, Post } from '@nestjs/common'
 import { AuthUser } from '@modules/auth/entities/auth.entity'
 
 import { Roles } from '@common/decorators/auth'
-import { CurrentUser } from '@common/decorators/user/current-user.decorator'
+import { CurrentUser } from '@common/decorators/user'
 import { RoleEnum } from '@common/enums'
 
 import { CreateSubscriptionDTO } from './dto/create-subscription.dto'
