@@ -2,7 +2,9 @@ import { Controller, Get } from '@nestjs/common'
 
 import { AuthUser } from '@modules/auth/entities/auth.entity'
 
-import { CurrentUser } from '@common/decorators/user/current-user.decorator'
+import { Roles } from '@common/decorators/auth'
+import { CurrentUser } from '@common/decorators/user'
+import { RoleEnum } from '@common/enums'
 
 import { UsersService } from './users.service'
 
@@ -10,6 +12,7 @@ import { UsersService } from './users.service'
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  @Roles(RoleEnum.USER, RoleEnum.ADMIN, RoleEnum.SUPER_ADMIN)
   @Get('get-me')
   currentUser(@CurrentUser() user: AuthUser) {
     return this.usersService.getMe(user.id)
