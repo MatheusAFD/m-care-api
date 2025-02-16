@@ -34,12 +34,21 @@ export class WebhookService {
       throw new NotFoundException('company not found')
     }
 
-    await this.db
-      .update(activeCompanyPlans)
-      .set({
-        isActive: true
-      })
-      .where(eq(activeCompanyPlans.companyId, company.id))
+    await this.db.transaction(async (tx) => {
+      await tx
+        .update(companies)
+        .set({
+          isActive: true
+        })
+        .where(eq(companies.id, company.id))
+
+      await tx
+        .update(activeCompanyPlans)
+        .set({
+          isActive: true
+        })
+        .where(eq(activeCompanyPlans.companyId, company.id))
+    })
 
     this.paymentsWebsocketService.emitPaymentStatus(company.id, event)
   }
