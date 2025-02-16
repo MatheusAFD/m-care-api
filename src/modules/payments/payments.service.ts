@@ -43,7 +43,7 @@ export class PaymentsService {
     paymentMethodId,
     companyId,
     planId
-  }: CreateSubscriptionDTO): Promise<string> {
+  }: CreateSubscriptionDTO) {
     const [company] = await this.db
       .select({
         id: companies.id,
@@ -97,7 +97,7 @@ export class PaymentsService {
         remainingDaysWithActivePlan: remainingDays
       })
 
-      return subscription.id
+      return { success: true }
     } catch (error) {
       return error
     }

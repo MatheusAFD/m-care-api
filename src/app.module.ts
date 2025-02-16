@@ -6,13 +6,16 @@ import { JwtService } from '@nestjs/jwt'
 import { AuthModule } from '@modules/auth/auth.module'
 import { JwtAuthGuard } from '@modules/auth/jwt-auth.guard'
 import { RolesGuard } from '@modules/auth/role.guard'
+import { CompaniesModule } from '@modules/companies/companies.module'
 import { DrizzleModule } from '@modules/drizzle/drizzle.module'
+import { PaymentsModule } from '@modules/payments/payments.module'
+import { PlansModule } from '@modules/plans/plans.module'
+import { UsersModule } from '@modules/users/users.module'
+import { WebhookModule } from '@modules/webhook/webhook.module'
+import { PaymentsEventsModule } from '@modules/websocket/payments-events/payments-events.module'
 
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
-import { CompaniesModule } from './modules/companies/companies.module'
-import { PaymentsModule } from './modules/payments/payments.module'
-import { PlansModule } from './modules/plans/plans.module';
 
 @Module({
   imports: [
@@ -21,7 +24,10 @@ import { PlansModule } from './modules/plans/plans.module';
     AuthModule,
     PaymentsModule,
     CompaniesModule,
-    PlansModule
+    PlansModule,
+    WebhookModule,
+    PaymentsEventsModule,
+    UsersModule
   ],
   controllers: [AppController],
   providers: [

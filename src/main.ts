@@ -3,12 +3,20 @@ import { NestFactory } from '@nestjs/core'
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
 
 import { env } from 'env'
+import * as express from 'express'
 
 import { AppModule } from './app.module'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
-  app.enableCors()
+
+  app.use('/webhook', express.raw({ type: 'application/json' }))
+
+  app.enableCors({
+    origin: env.CORS_ALLOWED_ORIGINS,
+    methods: 'GET,POST,PUT,DELETE',
+    allowedHeaders: 'Content-Type, Authorization'
+  })
   const config = new DocumentBuilder()
     .setTitle('m-care')
     .setDescription('API')
@@ -28,4 +36,4 @@ async function bootstrap() {
 
   await app.listen(env.NEST_API_PORT ?? 4000)
 }
-bootstrap()
+void bootstrap()
