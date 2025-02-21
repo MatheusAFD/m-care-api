@@ -1,5 +1,6 @@
 import { type NodePgDatabase, drizzle } from 'drizzle-orm/node-postgres'
 import { migrate } from 'drizzle-orm/node-postgres/migrator'
+
 import path from 'path'
 import pg from 'pg'
 import { exit } from 'process'
