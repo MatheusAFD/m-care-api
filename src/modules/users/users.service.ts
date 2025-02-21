@@ -8,6 +8,8 @@ import { DrizzleAsyncProvider } from '@db/drizzle/drizzle.provider'
 import { activeCompanyPlans, companies, roles, users } from '@db/drizzle/schema'
 import { DrizzleSchema } from '@db/drizzle/types'
 
+import { ERROR_CONSTANTS } from '@common/constants'
+
 import { User } from './entities/user.entity'
 
 @Injectable()
@@ -48,7 +50,7 @@ export class UsersService {
       .limit(1)
 
     if (!user) {
-      throw new NotFoundException('user not found')
+      throw new NotFoundException(ERROR_CONSTANTS.USER.NOT_FOUND)
     }
 
     return plainToClass(User, user)

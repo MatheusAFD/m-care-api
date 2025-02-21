@@ -13,6 +13,8 @@ import { DrizzleAsyncProvider } from '@db/drizzle/drizzle.provider'
 import { activeCompanyPlans, companies, plans } from '@db/drizzle/schema'
 import { DrizzleSchema } from '@db/drizzle/types'
 
+import { ERROR_CONSTANTS } from '@common/constants'
+
 import { CreateSubscriptionDTO } from './dto/create-subscription.dto'
 
 @Injectable()
@@ -54,7 +56,7 @@ export class PaymentsService {
       .limit(1)
 
     if (!company) {
-      throw new NotFoundException('company not found')
+      throw new NotFoundException(ERROR_CONSTANTS.COMPANY.NOT_FOUND)
     }
 
     const [plan] = await this.db
@@ -66,10 +68,12 @@ export class PaymentsService {
       .where(eq(plans.id, planId))
       .limit(1)
 
-    if (!plan || !plan.stripePriceId) {
-      throw new ForbiddenException(
-        'invalid plan or plan does not have a stripe price id'
-      )
+    if (!plan) {
+      throw new NotFoundException(ERROR_CONSTANTS.PLAN.NOT_FOUND)
+    }
+
+    if (!plan.stripePriceId) {
+      throw new ForbiddenException(ERROR_CONSTANTS.PLAN.MISSING_STRIPE_PRICE_ID)
     }
 
     try {

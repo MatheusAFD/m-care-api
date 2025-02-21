@@ -6,6 +6,7 @@ import {
 import { Reflector } from '@nestjs/core'
 import { AuthGuard } from '@nestjs/passport'
 
+import { ERROR_CONSTANTS } from '@common/constants'
 import { IS_PUBLIC_KEY, ROLES_KEY } from '@common/decorators/auth/'
 import { RoleEnum } from '@common/enums'
 
@@ -41,7 +42,9 @@ export class RolesGuard extends AuthGuard('jwt') {
     )
 
     if (!hasRequiredRole) {
-      throw new UnauthorizedException('Insufficient permissions')
+      throw new UnauthorizedException(
+        ERROR_CONSTANTS.AUTH.INSUFFICIENT_PERMISSIONS
+      )
     }
 
     return true

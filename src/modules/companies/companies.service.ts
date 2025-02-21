@@ -13,6 +13,7 @@ import { DrizzleAsyncProvider } from '@db/drizzle/drizzle.provider'
 import { companies, users } from '@db/drizzle/schema'
 import { DrizzleSchema } from '@db/drizzle/types'
 
+import { ERROR_CONSTANTS } from '@common/constants'
 import { RoleEnum } from '@common/enums'
 import { encryptData } from '@common/lib'
 
@@ -38,7 +39,7 @@ export class CompaniesService {
         }
       })
       if (!stripeCustomer) {
-        throw new ForbiddenException('error on creating stripe customer')
+        throw new ForbiddenException(ERROR_CONSTANTS.STRIPE.CREATE_CUSTOMER)
       }
 
       await this.db.transaction(async (tx) => {
@@ -57,7 +58,7 @@ export class CompaniesService {
         })
 
         if (!adminRole) {
-          throw new ForbiddenException('Admin role not found')
+          throw new ForbiddenException(ERROR_CONSTANTS.ROLES.ADMIN_NOT_FOUND)
         }
 
         const hashedPassword = await encryptData(body.password)
@@ -78,14 +79,7 @@ export class CompaniesService {
 
       return { success: true }
     } catch (error) {
-      if (error instanceof ForbiddenException) {
-        throw error
-      }
-
-      throw new InternalServerErrorException(
-        'An error occurred while processing the request',
-        error.message
-      )
+      throw new InternalServerErrorException(error)
     }
   }
 }
