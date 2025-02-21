@@ -11,6 +11,8 @@ import { DrizzleSchema } from '@db/drizzle/types'
 
 import { PaymentsEventsService } from '@modules/websocket/payments-events/payments-events.service'
 
+import { ERROR_CONSTANTS } from '@common/constants'
+
 @Injectable()
 export class WebhookService {
   private stripe: Stripe
@@ -31,7 +33,7 @@ export class WebhookService {
     })
 
     if (!company) {
-      throw new NotFoundException('company not found')
+      throw new NotFoundException(ERROR_CONSTANTS.COMPANY.NOT_FOUND)
     }
 
     await this.db.transaction(async (tx) => {
@@ -62,7 +64,7 @@ export class WebhookService {
     })
 
     if (!company) {
-      throw new NotFoundException('company not found')
+      throw new NotFoundException(ERROR_CONSTANTS.COMPANY.NOT_FOUND)
     }
 
     await this.db.transaction(async (tx) => {

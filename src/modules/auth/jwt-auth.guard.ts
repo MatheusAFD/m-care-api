@@ -10,6 +10,7 @@ import { JwtService } from '@nestjs/jwt'
 import { env } from 'env'
 import { Request } from 'express'
 
+import { ERROR_CONSTANTS } from '@common/constants'
 import { IS_PUBLIC_KEY } from '@common/decorators/auth'
 
 @Injectable()
@@ -33,7 +34,7 @@ export class JwtAuthGuard implements CanActivate {
     }
 
     if (!token) {
-      throw new UnauthorizedException()
+      throw new UnauthorizedException(ERROR_CONSTANTS.AUTH.UNAUTHORIZED)
     }
 
     try {

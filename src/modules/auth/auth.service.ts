@@ -7,6 +7,7 @@ import { DrizzleAsyncProvider } from 'src/drizzle/drizzle.provider'
 
 import { DrizzleSchema } from '@db/drizzle/types'
 
+import { ERROR_CONSTANTS } from '@common/constants'
 import { compareEncryptValue } from '@common/lib'
 
 import { SigninDTO } from './dto/sign-in.dto'
@@ -35,13 +36,13 @@ export class AuthService {
     })
 
     if (!user) {
-      throw new NotFoundException('User not found')
+      throw new NotFoundException(ERROR_CONSTANTS.USER.NOT_FOUND)
     }
 
     const isValidPassword = await compareEncryptValue(user.password, password)
 
     if (!isValidPassword) {
-      throw new NotFoundException('User not found')
+      throw new NotFoundException(ERROR_CONSTANTS.USER.NOT_FOUND)
     }
 
     return {
