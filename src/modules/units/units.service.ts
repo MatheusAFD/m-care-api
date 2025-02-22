@@ -5,16 +5,18 @@ import {
   InternalServerErrorException
 } from '@nestjs/common'
 
-import { and, eq } from 'drizzle-orm'
+import { and, count, desc, eq, ilike } from 'drizzle-orm'
 
 import { DrizzleAsyncProvider } from '@db/drizzle/drizzle.provider'
 import { companies, units } from '@db/drizzle/schema'
 import { DrizzleSchema } from '@db/drizzle/types'
 
 import { ERROR_CONSTANTS } from '@common/constants'
+import { StatusEnum } from '@common/enums'
+import { ResponseWithPagination } from '@common/types'
+import { calculatePagination, calculateQueryOffset } from '@common/utils'
 
-import { CreateUnitDTO } from './dto/create-unit.dto'
-import { UpdateUnitDTO } from './dto/update-unit.dto'
+import { GetUnitsDTO, CreateUnitDTO, UpdateUnitDTO } from './dto'
 import { Unit } from './entities/unit.entity'
 
 @Injectable()
@@ -55,8 +57,49 @@ export class UnitsService {
     }
   }
 
-  findAll() {
-    return `This action returns all units`
+  async findAll(
+    companyId: string,
+    query: GetUnitsDTO
+  ): Promise<ResponseWithPagination<Unit[]>> {
+    const {
+      search = '',
+      limit = 10,
+      page = 1,
+      status = StatusEnum.ACTIVE
+    } = query
+
+    const [{ count: totalItems }] = await this.db
+      .select({ count: count() })
+      .from(units)
+      .where(
+        and(
+          eq(units.companyId, companyId),
+          eq(units.status, status),
+          ilike(units.name, `%${search}%`)
+        )
+      )
+
+    const data = await this.db
+      .select()
+      .from(units)
+      .where(
+        and(
+          eq(units.companyId, companyId),
+          eq(units.status, status),
+          ilike(units.name, `%${search}%`)
+        )
+      )
+      .orderBy(desc(units.createdAt))
+      .offset(calculateQueryOffset(page, limit))
+      .limit(limit)
+
+    const pagination = calculatePagination({
+      limit,
+      page,
+      totalItems
+    })
+
+    return { data, pagination }
   }
 
   async findOne(unitId: string, companyId: string): Promise<Unit> {
