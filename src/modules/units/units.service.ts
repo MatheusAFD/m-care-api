@@ -5,7 +5,7 @@ import {
   InternalServerErrorException
 } from '@nestjs/common'
 
-import { eq } from 'drizzle-orm'
+import { and, eq } from 'drizzle-orm'
 
 import { DrizzleAsyncProvider } from '@db/drizzle/drizzle.provider'
 import { companies, units } from '@db/drizzle/schema'
@@ -15,6 +15,7 @@ import { ERROR_CONSTANTS } from '@common/constants'
 
 import { CreateUnitDTO } from './dto/create-unit.dto'
 import { UpdateUnitDTO } from './dto/update-unit.dto'
+import { Unit } from './entities/unit.entity'
 
 @Injectable()
 export class UnitsService {
@@ -58,8 +59,18 @@ export class UnitsService {
     return `This action returns all units`
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} unit`
+  async findOne(unitId: string, companyId: string): Promise<Unit> {
+    const [unit] = await this.db
+      .select()
+      .from(units)
+      .where(and(eq(units.id, unitId), eq(units.companyId, companyId)))
+      .limit(1)
+
+    if (!unit) {
+      throw new NotFoundException(ERROR_CONSTANTS.UNIT.NOT_FOUND)
+    }
+
+    return unit
   }
 
   update(id: number, body: UpdateUnitDTO) {
