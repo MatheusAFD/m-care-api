@@ -18,5 +18,8 @@ export const ERROR_CONSTANTS = {
   },
   STRIPE: {
     CREATE_CUSTOMER: 'error on creating stripe customer.'
+  },
+  VALIDATION: {
+    DEFAULT: 'validation errors.'
   }
 } as const
