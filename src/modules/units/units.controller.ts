@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param } from '@nestjs/common'
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Query
+} from '@nestjs/common'
 import {
   ApiBadRequestResponse,
   ApiBody,
@@ -15,9 +23,9 @@ import { ERROR_CONSTANTS } from '@common/constants'
 import { Roles } from '@common/decorators/auth'
 import { CurrentUser } from '@common/decorators/user'
 import { RoleEnum } from '@common/enums'
+import { ResponseWithPagination } from '@common/types'
 
-import { CreateUnitDTO } from './dto/create-unit.dto'
-import { UpdateUnitDTO } from './dto/update-unit.dto'
+import { CreateUnitDTO, UpdateUnitDTO, GetUnitsDTO } from './dto'
 import { Unit } from './entities/unit.entity'
 import { UnitsService } from './units.service'
 
@@ -41,9 +49,18 @@ export class UnitsController {
     return this.unitsService.create(user.companyId, body)
   }
 
+  @ApiBadRequestResponse({ description: ERROR_CONSTANTS.VALIDATION.DEFAULT })
+  @ApiUnauthorizedResponse({
+    description: ERROR_CONSTANTS.AUTH.INSUFFICIENT_PERMISSIONS
+  })
+  @ApiOkResponse({ description: 'OK' })
+  @Roles(RoleEnum.USER, RoleEnum.ADMIN)
   @Get()
-  findAll() {
-    return this.unitsService.findAll()
+  findAll(
+    @Query() query: GetUnitsDTO,
+    @CurrentUser() user: AuthUser
+  ): Promise<ResponseWithPagination<Unit[]>> {
+    return this.unitsService.findAll(user.companyId, query)
   }
 
   @ApiUnauthorizedResponse({
