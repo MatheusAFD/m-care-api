@@ -12,7 +12,7 @@ export class Unit implements PlanType {
   zipcode: string
   companyId: string
   status: 'INACTIVE' | 'ACTIVE'
-  updated_at: Date | null
-  created_at: Date
-  deleted_at: Date | null
+  updatedAt: Date | null
+  createdAt: Date
+  deletedAt: Date | null
 }

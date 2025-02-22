@@ -16,7 +16,7 @@ export class User implements UserType {
   roleId: string
   birthday: Date | null
   genre: string | null
-  updated_at: Date | null
-  created_at: Date
-  deleted_at: Date | null
+  updatedAt: Date | null
+  createdAt: Date
+  deletedAt: Date | null
 }
