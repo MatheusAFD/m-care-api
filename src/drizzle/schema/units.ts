@@ -1,6 +1,7 @@
 import { relations } from 'drizzle-orm'
 import { pgTable, varchar, text } from 'drizzle-orm/pg-core'
 
+import { StatusEnum } from '@common/enums'
 import { createCustomId } from '@common/lib'
 import { timestamps } from '@common/utils'
 
@@ -11,12 +12,13 @@ export const units = pgTable('units', {
     .primaryKey()
     .$default(() => createCustomId()),
   name: text('name').notNull(),
+  address: text('address').notNull(),
   city: text('city').notNull(),
   state: text('state').notNull(),
   zipcode: text('zipcode').notNull(),
   number: text('number').notNull(),
   companyId: varchar('company_id').notNull(),
-  status: pgStatusEnum().notNull(),
+  status: pgStatusEnum().notNull().default(StatusEnum.ACTIVE),
   ...timestamps
 })
 
@@ -27,3 +29,19 @@ export const unitsRelations = relations(units, ({ one, many }) => ({
   }),
   rooms: many(rooms)
 }))
+
+// units -> rooms -> employees -> schedules
+
+/* 
+ 
+units
+ - getAll
+ - create
+ - getOne
+ - update
+ - archive
+
+ rooms
+ - 
+
+*/
