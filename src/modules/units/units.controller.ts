@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete
-} from '@nestjs/common'
+import { Controller, Get, Post, Body, Patch, Param } from '@nestjs/common'
 import {
   ApiBadRequestResponse,
   ApiBody,
@@ -69,13 +61,22 @@ export class UnitsController {
     return this.unitsService.findOne(id, user.companyId)
   }
 
+  @ApiBadRequestResponse({ description: ERROR_CONSTANTS.VALIDATION.DEFAULT })
+  @ApiUnauthorizedResponse({
+    description: ERROR_CONSTANTS.AUTH.INSUFFICIENT_PERMISSIONS
+  })
+  @ApiNotFoundResponse({ description: ERROR_CONSTANTS.UNIT.NOT_FOUND })
+  @ApiBody({ type: UpdateUnitDTO, required: true })
+  @Roles(RoleEnum.ADMIN)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUnitDto: UpdateUnitDTO) {
-    return this.unitsService.update(+id, updateUnitDto)
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.unitsService.remove(+id)
+  update(
+    @Param('id') id: string,
+    @Body() updateUnitDto: UpdateUnitDTO,
+    @CurrentUser() user: AuthUser
+  ): Promise<Unit> {
+    return this.unitsService.update(
+      { id, companyId: user.companyId },
+      updateUnitDto
+    )
   }
 }

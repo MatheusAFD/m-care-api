@@ -14,7 +14,8 @@ export const ERROR_CONSTANTS = {
     MISSING_STRIPE_PRICE_ID: 'plan does not have a stripe price id'
   },
   UNIT: {
-    NOT_FOUND: 'unit not found'
+    NOT_FOUND: 'unit not found',
+    UPDATE_FAILED: 'unit update failed'
   },
   ROLES: {
     ADMIN_NOT_FOUND: 'admin role not found'
