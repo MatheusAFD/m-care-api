@@ -73,8 +73,33 @@ export class UnitsService {
     return unit
   }
 
-  update(id: number, body: UpdateUnitDTO) {
-    return `This action updates a #${id} unit ${body}`
+  async update(
+    { id, companyId }: { id: string; companyId: string },
+    body: UpdateUnitDTO
+  ): Promise<Unit> {
+    const { name, status, address, number, city, state, zipcode } = body
+
+    const unit = await this.findOne(id, companyId)
+
+    const [updatedUnit] = await this.db
+      .update(units)
+      .set({
+        name: name ?? unit.name,
+        status: status ?? unit.status,
+        address: address ?? unit.address,
+        number: number ?? unit.number,
+        city: city ?? unit.city,
+        state: state ?? unit.state,
+        zipcode: zipcode ?? unit.zipcode
+      })
+      .where(eq(units.id, unit.id))
+      .returning()
+
+    if (!updatedUnit) {
+      throw new InternalServerErrorException(ERROR_CONSTANTS.UNIT.UPDATE_FAILED)
+    }
+
+    return updatedUnit
   }
 
   remove(id: number) {
