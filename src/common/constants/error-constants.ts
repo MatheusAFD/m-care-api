@@ -10,8 +10,8 @@ export const ERROR_CONSTANTS = {
     NOT_FOUND: 'company not found.'
   },
   PLAN: {
-    NOT_FOUND: 'plan not found.',
-    MISSING_STRIPE_PRICE_ID: 'plan does not have a stripe price id.'
+  UNIT: {
+    NOT_FOUND: 'unit not found'
   },
   ROLES: {
     ADMIN_NOT_FOUND: 'admin role not found.'
