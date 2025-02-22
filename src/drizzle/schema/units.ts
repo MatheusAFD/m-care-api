@@ -29,19 +29,3 @@ export const unitsRelations = relations(units, ({ one, many }) => ({
   }),
   rooms: many(rooms)
 }))
-
-// units -> rooms -> employees -> schedules
-
-/* 
- 
-units
- - getAll
- - create
- - getOne
- - update
- - archive
-
- rooms
- - 
-
-*/
