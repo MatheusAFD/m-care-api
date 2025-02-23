@@ -17,6 +17,7 @@ import { PaymentsEventsModule } from '@modules/websocket/payments-events/payment
 
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
+import { RoomsModule } from './modules/rooms/rooms.module';
 
 @Module({
   imports: [
@@ -29,7 +30,8 @@ import { AppService } from './app.service'
     WebhookModule,
     PaymentsEventsModule,
     UsersModule,
-    UnitsModule
+    UnitsModule,
+    RoomsModule
   ],
   controllers: [AppController],
   providers: [
