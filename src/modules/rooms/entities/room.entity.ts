@@ -1,13 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger'
 
-import { units } from '@db/drizzle/schema'
+import { rooms } from '@db/drizzle/schema'
 
-export type PlanType = typeof units.$inferSelect
+export type RoomType = typeof rooms.$inferSelect
 
-export class Unit implements PlanType {
-  @ApiProperty()
-  number: string
-
+export class Room implements RoomType {
   @ApiProperty()
   id: string
 
@@ -15,22 +12,16 @@ export class Unit implements PlanType {
   name: string
 
   @ApiProperty()
-  address: string
-
-  @ApiProperty()
-  city: string
-
-  @ApiProperty()
-  state: string
-
-  @ApiProperty()
-  zipcode: string
-
-  @ApiProperty()
-  companyId: string
+  floor: string
 
   @ApiProperty()
   status: 'INACTIVE' | 'ACTIVE'
+
+  @ApiProperty()
+  unitId: string
+
+  @ApiProperty()
+  companyId: string
 
   @ApiProperty()
   updatedAt: Date | null

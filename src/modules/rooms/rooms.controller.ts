@@ -25,75 +25,66 @@ import { CurrentUser } from '@common/decorators/user'
 import { RoleEnum } from '@common/enums'
 import { ResponseWithPagination } from '@common/types'
 
-import { CreateUnitDTO, UpdateUnitDTO, GetUnitsDTO } from './dto'
-import { Unit } from './entities/unit.entity'
-import { UnitsService } from './units.service'
+import { CreateRoomDTO, GetRoomsDTO, UpdateRoomDTO } from './dto'
+import { Room } from './entities/room.entity'
+import { RoomsService } from './rooms.service'
 
-@Controller('units')
-export class UnitsController {
-  constructor(private readonly unitsService: UnitsService) {}
+@Controller('rooms')
+export class RoomsController {
+  constructor(private readonly roomsService: RoomsService) {}
 
-  @ApiCreatedResponse({
-    description: 'Unit created successfully.'
-  })
+  @Post()
   @ApiBadRequestResponse({ description: ERROR_CONSTANTS.VALIDATION.DEFAULT })
   @ApiUnauthorizedResponse({
     description: ERROR_CONSTANTS.AUTH.INSUFFICIENT_PERMISSIONS
   })
-  @ApiNotFoundResponse({ description: ERROR_CONSTANTS.COMPANY.NOT_FOUND })
-  @ApiCreatedResponse({ type: Unit })
-  @ApiBody({ type: CreateUnitDTO, required: true })
+  @ApiNotFoundResponse({ description: ERROR_CONSTANTS.UNIT.NOT_FOUND })
+  @ApiCreatedResponse({ type: Room })
+  @ApiBody({ type: CreateRoomDTO, required: true })
   @Roles(RoleEnum.ADMIN)
-  @Post()
-  create(@CurrentUser() user: AuthUser, @Body() body: CreateUnitDTO) {
-    return this.unitsService.create(user.companyId, body)
+  create(
+    @Body() body: CreateRoomDTO,
+    @CurrentUser() user: AuthUser
+  ): Promise<Room> {
+    return this.roomsService.create(user.companyId, body)
   }
 
+  @Get()
   @ApiBadRequestResponse({ description: ERROR_CONSTANTS.VALIDATION.DEFAULT })
   @ApiUnauthorizedResponse({
     description: ERROR_CONSTANTS.AUTH.INSUFFICIENT_PERMISSIONS
   })
   @ApiOkResponse({ description: 'OK' })
   @Roles(RoleEnum.USER, RoleEnum.ADMIN)
-  @Get()
   findAll(
-    @Query() query: GetUnitsDTO,
+    @Query() query: GetRoomsDTO,
     @CurrentUser() user: AuthUser
-  ): Promise<ResponseWithPagination<Unit[]>> {
-    return this.unitsService.findAll(user.companyId, query)
+  ): Promise<ResponseWithPagination<Room[]>> {
+    return this.roomsService.findAll(user.companyId, query)
   }
 
+  @Get(':id')
+  @ApiBadRequestResponse({ description: ERROR_CONSTANTS.VALIDATION.DEFAULT })
   @ApiUnauthorizedResponse({
     description: ERROR_CONSTANTS.AUTH.INSUFFICIENT_PERMISSIONS
   })
-  @ApiNotFoundResponse({ description: ERROR_CONSTANTS.UNIT.NOT_FOUND })
+  @ApiNotFoundResponse({ description: ERROR_CONSTANTS.ROOM.NOT_FOUND })
   @ApiOkResponse({ description: 'OK' })
   @ApiParam({ name: 'id', required: true })
   @Roles(RoleEnum.USER, RoleEnum.ADMIN)
-  @Get(':id')
-  findOne(
-    @Param('id') id: string,
-    @CurrentUser() user: AuthUser
-  ): Promise<Unit> {
-    return this.unitsService.findOne(id, user.companyId)
+  findOne(@Param('id') id: string): Promise<Room> {
+    return this.roomsService.findOne(id)
   }
 
+  @Patch(':id')
   @ApiBadRequestResponse({ description: ERROR_CONSTANTS.VALIDATION.DEFAULT })
   @ApiUnauthorizedResponse({
     description: ERROR_CONSTANTS.AUTH.INSUFFICIENT_PERMISSIONS
   })
-  @ApiNotFoundResponse({ description: ERROR_CONSTANTS.UNIT.NOT_FOUND })
-  @ApiBody({ type: UpdateUnitDTO, required: true })
+  @ApiNotFoundResponse({ description: ERROR_CONSTANTS.ROOM.NOT_FOUND })
+  @ApiBody({ type: UpdateRoomDTO, required: true })
   @Roles(RoleEnum.ADMIN)
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateUnitDto: UpdateUnitDTO,
-    @CurrentUser() user: AuthUser
-  ): Promise<Unit> {
-    return this.unitsService.update(
-      { id, companyId: user.companyId },
-      updateUnitDto
-    )
+  update(@Param('id') id: string, @Body() body: UpdateRoomDTO): Promise<Room> {
+    return this.roomsService.update(id, body)
   }
 }

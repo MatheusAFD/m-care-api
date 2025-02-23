@@ -1,0 +1,1 @@
+ALTER TABLE "rooms" ADD COLUMN "company_id" text NOT NULL;
