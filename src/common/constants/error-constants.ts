@@ -24,6 +24,7 @@ export const ERROR_CONSTANTS = {
     CREATE_CUSTOMER: 'error on creating stripe customer'
   },
   VALIDATION: {
-    DEFAULT: 'validation errors'
+    DEFAULT: 'validation errors',
+    CONFLICT: 'you do not have permission to perform this action'
   }
 } as const

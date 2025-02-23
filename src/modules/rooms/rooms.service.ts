@@ -1,0 +1,73 @@
+import {
+  ForbiddenException,
+  Inject,
+  Injectable,
+  NotFoundException
+} from '@nestjs/common'
+
+import { eq } from 'drizzle-orm'
+
+import { DrizzleAsyncProvider } from '@db/drizzle/drizzle.provider'
+import { rooms, units } from '@db/drizzle/schema'
+import { DrizzleSchema } from '@db/drizzle/types'
+
+import { ERROR_CONSTANTS } from '@common/constants'
+import { StatusEnum } from '@common/enums'
+
+import { CreateRoomDTO } from './dto/create-room.dto'
+import { UpdateRoomDTO } from './dto/update-room.dto'
+import { Room } from './entities/room.entity'
+
+@Injectable()
+export class RoomsService {
+  constructor(
+    @Inject(DrizzleAsyncProvider)
+    private readonly db: DrizzleSchema
+  ) {}
+
+  async create(companyId: string, body: CreateRoomDTO): Promise<Room> {
+    const { floor, name, status = StatusEnum.ACTIVE, unitId } = body
+
+    const [unit] = await this.db
+      .select({ companyId: units.companyId })
+      .from(units)
+      .where(eq(units.id, unitId))
+      .limit(1)
+
+    if (!unit) {
+      throw new NotFoundException(ERROR_CONSTANTS.UNIT.NOT_FOUND)
+    }
+
+    if (unit.companyId !== companyId) {
+      throw new ForbiddenException(ERROR_CONSTANTS.VALIDATION.CONFLICT)
+    }
+
+    const [room] = await this.db
+      .insert(rooms)
+      .values({
+        floor,
+        name,
+        status,
+        unitId
+      })
+      .returning()
+
+    return room
+  }
+
+  findAll() {
+    return `This action returns all rooms`
+  }
+
+  findOne(id: number) {
+    return `This action returns a #${id} room`
+  }
+
+  update(id: number, body: UpdateRoomDTO) {
+    return `This action updates a #${id} room ${body}`
+  }
+
+  remove(id: number) {
+    return `This action removes a #${id} room`
+  }
+}
