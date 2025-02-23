@@ -69,7 +69,21 @@ export class RoomsService {
     return room
   }
 
-  update(id: number, body: UpdateRoomDTO) {
-    return `This action updates a #${id} room ${body}`
+  async update(id: string, body: UpdateRoomDTO): Promise<Room> {
+    const { name, floor, status, unitId } = body
+
+    const room = await this.findOne(id)
+
+    const [updatedRoom] = await this.db
+      .update(rooms)
+      .set({
+        name: name ?? room.name,
+        floor: floor ?? room.floor,
+        status: status ?? room.status,
+        unitId: unitId ?? room.unitId
+      })
+      .returning()
+
+    return updatedRoom
   }
 }

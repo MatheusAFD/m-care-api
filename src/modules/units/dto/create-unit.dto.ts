@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 
+import { Transform } from 'class-transformer'
 import {
   IsEnum,
   IsNotEmpty,
@@ -47,6 +48,7 @@ export class CreateUnitDTO implements createUnit {
 
   @ApiProperty()
   @IsOptional()
+  @Transform(({ value }) => String(value).toUpperCase())
   @IsEnum(StatusEnum)
   status: keyof typeof StatusEnum
 }
