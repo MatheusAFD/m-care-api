@@ -59,15 +59,17 @@ export class RoomsService {
     return `This action returns all rooms`
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} room`
+  async findOne(id: string): Promise<Room> {
+    const [room] = await this.db.select().from(rooms).where(eq(rooms.id, id))
+
+    if (!room) {
+      throw new NotFoundException(ERROR_CONSTANTS.ROOM.NOT_FOUND)
+    }
+
+    return room
   }
 
   update(id: number, body: UpdateRoomDTO) {
     return `This action updates a #${id} room ${body}`
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} room`
   }
 }
