@@ -41,7 +41,7 @@ export class UnitsController {
     description: ERROR_CONSTANTS.AUTH.INSUFFICIENT_PERMISSIONS
   })
   @ApiNotFoundResponse({ description: ERROR_CONSTANTS.COMPANY.NOT_FOUND })
-  @ApiCreatedResponse()
+  @ApiCreatedResponse({ type: Unit })
   @ApiBody({ type: CreateUnitDTO, required: true })
   @Roles(RoleEnum.ADMIN)
   @Post()
