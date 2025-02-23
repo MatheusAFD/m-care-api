@@ -7,7 +7,7 @@ import { rooms } from '@db/drizzle/schema'
 
 import { StatusEnum } from '@common/enums'
 
-type createRoomInsert = typeof rooms.$inferInsert
+type createRoomInsert = Omit<typeof rooms.$inferInsert, 'companyId'>
 
 export class CreateRoomDTO implements createRoomInsert {
   @ApiProperty()

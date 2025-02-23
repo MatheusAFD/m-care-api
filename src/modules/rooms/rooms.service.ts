@@ -5,7 +5,7 @@ import {
   NotFoundException
 } from '@nestjs/common'
 
-import { eq } from 'drizzle-orm'
+import { and, count, desc, eq, ilike } from 'drizzle-orm'
 
 import { DrizzleAsyncProvider } from '@db/drizzle/drizzle.provider'
 import { rooms, units } from '@db/drizzle/schema'
@@ -13,7 +13,10 @@ import { DrizzleSchema } from '@db/drizzle/types'
 
 import { ERROR_CONSTANTS } from '@common/constants'
 import { StatusEnum } from '@common/enums'
+import { ResponseWithPagination } from '@common/types'
+import { calculatePagination, calculateQueryOffset } from '@common/utils'
 
+import { GetRoomsDTO } from './dto'
 import { CreateRoomDTO } from './dto/create-room.dto'
 import { UpdateRoomDTO } from './dto/update-room.dto'
 import { Room } from './entities/room.entity'
@@ -45,9 +48,10 @@ export class RoomsService {
     const [room] = await this.db
       .insert(rooms)
       .values({
-        floor,
         name,
+        floor,
         status,
+        companyId,
         unitId
       })
       .returning()
@@ -55,8 +59,48 @@ export class RoomsService {
     return room
   }
 
-  findAll() {
-    return `This action returns all rooms`
+  async findAll(
+    companyId: string,
+    query: GetRoomsDTO
+  ): Promise<ResponseWithPagination<Room[]>> {
+    const { limit, page, search, status, unitId } = query
+
+    console.log(unitId)
+
+    const [{ count: totalItems }] = await this.db
+      .select({ count: count() })
+      .from(rooms)
+      .where(
+        and(
+          eq(rooms.companyId, companyId),
+          eq(rooms.status, status),
+          ilike(rooms.name, `%${search}%`),
+          unitId ? eq(rooms.unitId, unitId) : undefined
+        )
+      )
+
+    const data = await this.db
+      .select()
+      .from(rooms)
+      .where(
+        and(
+          eq(rooms.companyId, companyId),
+          eq(rooms.status, status),
+          ilike(rooms.name, `%${search}%`),
+          unitId ? eq(rooms.unitId, unitId) : undefined
+        )
+      )
+      .orderBy(desc(rooms.createdAt))
+      .offset(calculateQueryOffset(page, limit))
+      .limit(limit)
+
+    const pagination = calculatePagination({
+      limit,
+      page,
+      totalItems
+    })
+
+    return { data, pagination }
   }
 
   async findOne(id: string): Promise<Room> {

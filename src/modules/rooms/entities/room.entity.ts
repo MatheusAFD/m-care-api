@@ -21,6 +21,9 @@ export class Room implements RoomType {
   unitId: string
 
   @ApiProperty()
+  companyId: string
+
+  @ApiProperty()
   updatedAt: Date | null
 
   @ApiProperty()
