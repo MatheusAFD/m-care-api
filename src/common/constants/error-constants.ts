@@ -17,6 +17,10 @@ export const ERROR_CONSTANTS = {
     NOT_FOUND: 'unit not found',
     UPDATE_FAILED: 'unit update failed'
   },
+  ROOM: {
+    NOT_FOUND: 'room not found',
+    UPDATE_FAILED: 'room update failed'
+  },
   ROLES: {
     ADMIN_NOT_FOUND: 'admin role not found'
   },
