@@ -1,10 +1,12 @@
 import { Controller, Get, Post, Body, Patch, Param } from '@nestjs/common'
 import {
+  ApiBadRequestResponse,
   ApiBody,
   ApiCreatedResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
-  ApiParam
+  ApiParam,
+  ApiUnauthorizedResponse
 } from '@nestjs/swagger'
 
 import { AuthUser } from '@modules/auth/entities/auth.entity'
@@ -22,12 +24,19 @@ import { RoomsService } from './rooms.service'
 export class RoomsController {
   constructor(private readonly roomsService: RoomsService) {}
 
+  @ApiBadRequestResponse({ description: ERROR_CONSTANTS.VALIDATION.DEFAULT })
+  @ApiUnauthorizedResponse({
+    description: ERROR_CONSTANTS.AUTH.INSUFFICIENT_PERMISSIONS
+  })
   @ApiNotFoundResponse({ description: ERROR_CONSTANTS.UNIT.NOT_FOUND })
   @ApiCreatedResponse({ type: Room })
   @ApiBody({ type: CreateRoomDTO, required: true })
   @Roles(RoleEnum.ADMIN)
   @Post()
-  create(@Body() body: CreateRoomDTO, @CurrentUser() user: AuthUser) {
+  create(
+    @Body() body: CreateRoomDTO,
+    @CurrentUser() user: AuthUser
+  ): Promise<Room> {
     return this.roomsService.create(user.companyId, body)
   }
 
@@ -36,17 +45,28 @@ export class RoomsController {
     return this.roomsService.findAll()
   }
 
+  @ApiBadRequestResponse({ description: ERROR_CONSTANTS.VALIDATION.DEFAULT })
+  @ApiUnauthorizedResponse({
+    description: ERROR_CONSTANTS.AUTH.INSUFFICIENT_PERMISSIONS
+  })
   @ApiNotFoundResponse({ description: ERROR_CONSTANTS.ROOM.NOT_FOUND })
   @ApiOkResponse({ description: 'OK' })
   @ApiParam({ name: 'id', required: true })
   @Roles(RoleEnum.USER, RoleEnum.ADMIN)
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: string): Promise<Room> {
     return this.roomsService.findOne(id)
   }
 
+  @ApiBadRequestResponse({ description: ERROR_CONSTANTS.VALIDATION.DEFAULT })
+  @ApiUnauthorizedResponse({
+    description: ERROR_CONSTANTS.AUTH.INSUFFICIENT_PERMISSIONS
+  })
+  @ApiNotFoundResponse({ description: ERROR_CONSTANTS.ROOM.NOT_FOUND })
+  @ApiBody({ type: UpdateRoomDTO, required: true })
+  @Roles(RoleEnum.ADMIN)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRoomDto: UpdateRoomDTO) {
-    return this.roomsService.update(+id, updateRoomDto)
+  update(@Param('id') id: string, @Body() body: UpdateRoomDTO): Promise<Room> {
+    return this.roomsService.update(id, body)
   }
 }
