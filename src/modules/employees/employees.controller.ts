@@ -3,6 +3,9 @@ import {
   ApiBadRequestResponse,
   ApiBody,
   ApiCreatedResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiParam,
   ApiUnauthorizedResponse
 } from '@nestjs/swagger'
 
@@ -45,9 +48,16 @@ export class EmployeesController {
     return this.employeesService.findAll()
   }
 
+  @ApiBadRequestResponse({ description: ERROR_CONSTANTS.VALIDATION.DEFAULT })
+  @ApiNotFoundResponse({ description: ERROR_CONSTANTS.EMPLOYEE.NOT_FOUND })
+  @ApiOkResponse({ type: Employee })
+  @ApiParam({ name: 'id', required: true })
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.employeesService.findOne(id)
+  findOne(
+    @Param('id') id: string,
+    @CurrentUser() user: AuthUser
+  ): Promise<Employee> {
+    return this.employeesService.findOne(user.companyId, id)
   }
 
   @Patch(':id')

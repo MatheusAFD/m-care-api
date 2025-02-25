@@ -7,6 +7,9 @@ export const ERROR_CONSTANTS = {
     NOT_FOUND: 'user not found',
     ALREADY_EXISTS: 'user already exists'
   },
+  EMPLOYEE: {
+    NOT_FOUND: 'employee not found'
+  },
   COMPANY: {
     NOT_FOUND: 'company not found'
   },
