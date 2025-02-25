@@ -61,12 +61,7 @@ export class UnitsService {
     companyId: string,
     query: GetUnitsDTO
   ): Promise<ResponseWithPagination<Unit[]>> {
-    const {
-      search = '',
-      limit = 10,
-      page = 1,
-      status = StatusEnum.ACTIVE
-    } = query
+    const { search = '', limit, page, status = StatusEnum.ACTIVE } = query
 
     const [{ count: totalItems }] = await this.db
       .select({ count: count() })
