@@ -5,14 +5,18 @@ import {
   NotFoundException
 } from '@nestjs/common'
 
-import { and, eq } from 'drizzle-orm'
+import { and, count, desc, eq, ilike } from 'drizzle-orm'
 
 import { DrizzleAsyncProvider } from '@db/drizzle/drizzle.provider'
 import { employees } from '@db/drizzle/schema'
 import { DrizzleSchema } from '@db/drizzle/types'
 
 import { ERROR_CONSTANTS } from '@common/constants'
+import { StatusEnum } from '@common/enums'
+import { ResponseWithPagination } from '@common/types'
+import { calculatePagination, calculateQueryOffset } from '@common/utils'
 
+import { GetEmployeesDTO } from './dto/get-employee.dto'
 import { UpdateEmployeeDTO } from './dto/update-employee.dto'
 import { Employee } from './entities/employee.entity'
 
@@ -23,8 +27,44 @@ export class EmployeesService {
     private readonly db: DrizzleSchema
   ) {}
 
-  findAll() {
-    return `This action returns all employees`
+  async findAll(
+    companyId: string,
+    filters: GetEmployeesDTO
+  ): Promise<ResponseWithPagination<Employee[]>> {
+    const { search = '', limit, page, status = StatusEnum.ACTIVE } = filters
+
+    const [{ count: totalItems }] = await this.db
+      .select({ count: count() })
+      .from(employees)
+      .where(
+        and(
+          eq(employees.companyId, companyId),
+          eq(employees.status, status),
+          ilike(employees.name, `%${search}%`)
+        )
+      )
+
+    const data = await this.db
+      .select()
+      .from(employees)
+      .where(
+        and(
+          eq(employees.companyId, companyId),
+          eq(employees.status, status),
+          ilike(employees.name, `%${search}%`)
+        )
+      )
+      .orderBy(desc(employees.createdAt))
+      .offset(calculateQueryOffset(page, limit))
+      .limit(limit)
+
+    const pagination = calculatePagination({
+      limit,
+      page,
+      totalItems
+    })
+
+    return { data, pagination }
   }
 
   async findOne(companyId: string, id: string): Promise<Employee> {

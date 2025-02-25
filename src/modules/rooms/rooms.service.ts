@@ -65,8 +65,6 @@ export class RoomsService {
   ): Promise<ResponseWithPagination<Room[]>> {
     const { limit, page, search, status, unitId } = query
 
-    console.log(unitId)
-
     const [{ count: totalItems }] = await this.db
       .select({ count: count() })
       .from(rooms)
