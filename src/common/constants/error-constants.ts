@@ -4,7 +4,8 @@ export const ERROR_CONSTANTS = {
     UNAUTHORIZED: 'unauthorized access'
   },
   USER: {
-    NOT_FOUND: 'user not found'
+    NOT_FOUND: 'user not found',
+    ALREADY_EXISTS: 'user already exists'
   },
   COMPANY: {
     NOT_FOUND: 'company not found'
