@@ -23,12 +23,12 @@ export class Employee implements EmployeeSelect {
   @ApiProperty()
   companyId: string
 
-  @ApiProperty()
+  @ApiProperty({ type: Date })
   updatedAt: Date | null
 
-  @ApiProperty()
+  @ApiProperty({ type: Date })
   createdAt: Date
 
-  @ApiProperty()
+  @ApiProperty({ type: Date })
   deletedAt: Date | null
 }
