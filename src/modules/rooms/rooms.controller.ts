@@ -34,6 +34,7 @@ export class RoomsController {
   constructor(private readonly roomsService: RoomsService) {}
 
   @Post()
+  @Roles(RoleEnum.ADMIN)
   @ApiBadRequestResponse({ description: ERROR_CONSTANTS.VALIDATION.DEFAULT })
   @ApiUnauthorizedResponse({
     description: ERROR_CONSTANTS.AUTH.INSUFFICIENT_PERMISSIONS
@@ -41,7 +42,6 @@ export class RoomsController {
   @ApiNotFoundResponse({ description: ERROR_CONSTANTS.UNIT.NOT_FOUND })
   @ApiCreatedResponse({ type: Room })
   @ApiBody({ type: CreateRoomDTO, required: true })
-  @Roles(RoleEnum.ADMIN)
   create(
     @Body() body: CreateRoomDTO,
     @CurrentUser() user: AuthUser
@@ -50,12 +50,12 @@ export class RoomsController {
   }
 
   @Get()
+  @Roles(RoleEnum.USER, RoleEnum.ADMIN)
   @ApiBadRequestResponse({ description: ERROR_CONSTANTS.VALIDATION.DEFAULT })
   @ApiUnauthorizedResponse({
     description: ERROR_CONSTANTS.AUTH.INSUFFICIENT_PERMISSIONS
   })
   @ApiOkResponse({ description: 'OK' })
-  @Roles(RoleEnum.USER, RoleEnum.ADMIN)
   findAll(
     @Query() query: GetRoomsDTO,
     @CurrentUser() user: AuthUser
@@ -64,6 +64,7 @@ export class RoomsController {
   }
 
   @Get(':id')
+  @Roles(RoleEnum.USER, RoleEnum.ADMIN)
   @ApiBadRequestResponse({ description: ERROR_CONSTANTS.VALIDATION.DEFAULT })
   @ApiUnauthorizedResponse({
     description: ERROR_CONSTANTS.AUTH.INSUFFICIENT_PERMISSIONS
@@ -71,19 +72,18 @@ export class RoomsController {
   @ApiNotFoundResponse({ description: ERROR_CONSTANTS.ROOM.NOT_FOUND })
   @ApiOkResponse({ description: 'OK' })
   @ApiParam({ name: 'id', required: true })
-  @Roles(RoleEnum.USER, RoleEnum.ADMIN)
   findOne(@Param('id') id: string): Promise<Room> {
     return this.roomsService.findOne(id)
   }
 
   @Patch(':id')
+  @Roles(RoleEnum.ADMIN)
   @ApiBadRequestResponse({ description: ERROR_CONSTANTS.VALIDATION.DEFAULT })
   @ApiUnauthorizedResponse({
     description: ERROR_CONSTANTS.AUTH.INSUFFICIENT_PERMISSIONS
   })
   @ApiNotFoundResponse({ description: ERROR_CONSTANTS.ROOM.NOT_FOUND })
   @ApiBody({ type: UpdateRoomDTO, required: true })
-  @Roles(RoleEnum.ADMIN)
   update(@Param('id') id: string, @Body() body: UpdateRoomDTO): Promise<Room> {
     return this.roomsService.update(id, body)
   }

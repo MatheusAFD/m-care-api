@@ -8,6 +8,7 @@ import { JwtAuthGuard } from '@modules/auth/jwt-auth.guard'
 import { RolesGuard } from '@modules/auth/role.guard'
 import { CompaniesModule } from '@modules/companies/companies.module'
 import { DrizzleModule } from '@modules/drizzle/drizzle.module'
+import { EmployeesModule } from '@modules/employees/employees.module'
 import { PaymentsModule } from '@modules/payments/payments.module'
 import { PlansModule } from '@modules/plans/plans.module'
 import { RoomsModule } from '@modules/rooms/rooms.module'
@@ -31,7 +32,8 @@ import { AppService } from './app.service'
     PaymentsEventsModule,
     UsersModule,
     UnitsModule,
-    RoomsModule
+    RoomsModule,
+    EmployeesModule
   ],
   controllers: [AppController],
   providers: [
