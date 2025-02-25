@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param } from '@nestjs/common'
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Query
+} from '@nestjs/common'
 import {
   ApiBadRequestResponse,
   ApiBody,
@@ -15,8 +23,10 @@ import { ERROR_CONSTANTS } from '@common/constants'
 import { Roles } from '@common/decorators/auth'
 import { CurrentUser } from '@common/decorators/user'
 import { RoleEnum } from '@common/enums'
+import { ResponseWithPagination } from '@common/types'
 
 import { CreateEmployeeDTO, UpdateEmployeeDTO } from './dto'
+import { GetEmployeesDTO } from './dto/get-employee.dto'
 import { EmployeesService } from './employees.service'
 import { Employee } from './entities/employee.entity'
 import { CreateEmployeeAndUserUseCase } from './use-cases'
@@ -44,8 +54,17 @@ export class EmployeesController {
   }
 
   @Get()
-  findAll() {
-    return this.employeesService.findAll()
+  @Roles(RoleEnum.ADMIN)
+  @ApiBadRequestResponse({ description: ERROR_CONSTANTS.VALIDATION.DEFAULT })
+  @ApiUnauthorizedResponse({
+    description: ERROR_CONSTANTS.AUTH.INSUFFICIENT_PERMISSIONS
+  })
+  @ApiOkResponse({ type: Employee, isArray: true })
+  findAll(
+    @Query() filters: GetEmployeesDTO,
+    @CurrentUser() user: AuthUser
+  ): Promise<ResponseWithPagination<Employee[]>> {
+    return this.employeesService.findAll(user.companyId, filters)
   }
 
   @Get(':id')
