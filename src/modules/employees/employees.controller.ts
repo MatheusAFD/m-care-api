@@ -48,11 +48,12 @@ export class EmployeesController {
     return this.employeesService.findAll()
   }
 
+  @Get(':id')
+  @Roles(RoleEnum.ADMIN)
   @ApiBadRequestResponse({ description: ERROR_CONSTANTS.VALIDATION.DEFAULT })
   @ApiNotFoundResponse({ description: ERROR_CONSTANTS.EMPLOYEE.NOT_FOUND })
   @ApiOkResponse({ type: Employee })
   @ApiParam({ name: 'id', required: true })
-  @Get(':id')
   findOne(
     @Param('id') id: string,
     @CurrentUser() user: AuthUser
@@ -61,10 +62,15 @@ export class EmployeesController {
   }
 
   @Patch(':id')
+  @Roles(RoleEnum.ADMIN)
+  @ApiBadRequestResponse({ description: ERROR_CONSTANTS.VALIDATION.DEFAULT })
+  @ApiNotFoundResponse({ description: ERROR_CONSTANTS.EMPLOYEE.NOT_FOUND })
+  @ApiOkResponse({ type: Employee })
   update(
     @Param('id') id: string,
-    @Body() updateEmployeeDto: UpdateEmployeeDTO
-  ) {
-    return this.employeesService.update(id, updateEmployeeDto)
+    @Body() body: UpdateEmployeeDTO,
+    @CurrentUser() user: AuthUser
+  ): Promise<Employee> {
+    return this.employeesService.update({ id, companyId: user.companyId }, body)
   }
 }

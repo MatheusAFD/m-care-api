@@ -1,4 +1,9 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common'
+import {
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException
+} from '@nestjs/common'
 
 import { and, eq } from 'drizzle-orm'
 
@@ -36,7 +41,30 @@ export class EmployeesService {
     return employee
   }
 
-  update(id: string, body: UpdateEmployeeDTO) {
-    return `This action updates a #${id} employee ${body}`
+  async update(
+    { id, companyId }: { id: string; companyId: string },
+    body: UpdateEmployeeDTO
+  ): Promise<Employee> {
+    const { name, status, color } = body
+
+    const employee = await this.findOne(companyId, id)
+
+    const [updatedEmployee] = await this.db
+      .update(employees)
+      .set({
+        name: name ?? employee.name,
+        color: color ?? employee.color,
+        status: status ?? employee.status
+      })
+      .where(and(eq(employees.id, id), eq(employees.companyId, companyId)))
+      .returning()
+
+    if (!updatedEmployee) {
+      throw new InternalServerErrorException(
+        ERROR_CONSTANTS.EMPLOYEE.UPDATE_FAILED
+      )
+    }
+
+    return updatedEmployee
   }
 }
