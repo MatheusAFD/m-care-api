@@ -36,14 +36,13 @@ export class AuthService {
       role: user.role,
       companyId: user.companyId
     }
-
     const accessToken = this.jwtService.sign(jwtPayload, {
-      expiresIn: '30s',
+      expiresIn: '1h',
       secret: env.JWT_SECRET
     })
 
     const refreshToken = this.jwtService.sign(jwtPayload, {
-      expiresIn: '60s',
+      expiresIn: '1h20m',
       secret: env.JWT_REFRESH_SECRET
     })
 
