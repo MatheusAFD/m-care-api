@@ -7,6 +7,7 @@ const envSchema = z.object({
   STRIPE_SECRET_KEY: z.string(),
   STRIPE_WEBHOOK_SECRET: z.string(),
   JWT_SECRET: z.string(),
+  JWT_REFRESH_SECRET: z.string(),
   POSTGRES_PASSWORD: z.string(),
   POSTGRES_USER: z.string(),
   POSTGRES_DB: z.string(),
