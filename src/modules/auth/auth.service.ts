@@ -29,12 +29,16 @@ export class AuthService {
   private async generateJwtTokens(user: {
     id: string
     role: { type: string }
-    companyId: string
+    company: {
+      id: string
+      isActive: boolean
+    }
   }) {
     const jwtPayload = {
       id: user.id,
       role: user.role,
-      companyId: user.companyId
+      companyId: user.company.id,
+      isActive: user.company.isActive
     }
     const accessToken = this.jwtService.sign(jwtPayload, {
       expiresIn: '1h',
@@ -69,6 +73,12 @@ export class AuthService {
           columns: {
             id: true,
             type: true
+          }
+        },
+        company: {
+          columns: {
+            id: true,
+            isActive: true
           }
         }
       }
@@ -105,6 +115,12 @@ export class AuthService {
             id: true,
             type: true
           }
+        },
+        company: {
+          columns: {
+            id: true,
+            isActive: true
+          }
         }
       }
     })
@@ -122,7 +138,10 @@ export class AuthService {
     const { accessToken, refreshToken } = await this.generateJwtTokens({
       id: user.id,
       role: user.role,
-      companyId: user.companyId
+      company: {
+        id: user.company.id,
+        isActive: user.company.isActive
+      }
     })
 
     return {
@@ -138,7 +157,10 @@ export class AuthService {
       await this.generateJwtTokens({
         id: user.id,
         role: user.role,
-        companyId: user.companyId
+        company: {
+          id: user.company.id,
+          isActive: user.company.isActive
+        }
       })
 
     return {

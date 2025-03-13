@@ -13,7 +13,7 @@ import { PaymentsService } from './payments.service'
 export class PaymentsController {
   constructor(private readonly paymentsService: PaymentsService) {}
 
-  @Roles(RoleEnum.SUPER_ADMIN)
+  @Roles(RoleEnum.ADMIN)
   @Post('create-subscription')
   async createSubscription(
     @Body() body: Omit<CreateSubscriptionDTO, 'companyId'>,
