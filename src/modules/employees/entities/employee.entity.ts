@@ -23,6 +23,27 @@ export class Employee implements EmployeeSelect {
   @ApiProperty()
   companyId: string
 
+  @ApiProperty()
+  number: string
+
+  @ApiProperty()
+  phone: string
+
+  @ApiProperty()
+  isWhatsapp: boolean | null
+
+  @ApiProperty()
+  address: string
+
+  @ApiProperty()
+  zipcode: string
+
+  @ApiProperty()
+  city: string
+
+  @ApiProperty()
+  state: string
+
   @ApiProperty({ type: Date })
   updatedAt: Date | null
 

@@ -26,8 +26,15 @@ export class CreateEmployeeAndUserUseCase {
       password,
       status = StatusEnum.ACTIVE,
       color,
-      birthday,
-      genre
+      birthdate,
+      genre,
+      phone,
+      isWhatsapp,
+      address,
+      city,
+      state,
+      zipcode,
+      number
     } = body
 
     const hashedPassword = await encryptData(password)
@@ -58,7 +65,7 @@ export class CreateEmployeeAndUserUseCase {
             name,
             password: hashedPassword,
             roleId: userRole.roleId,
-            birthday,
+            birthdate,
             genre
           })
           .returning()
@@ -70,6 +77,13 @@ export class CreateEmployeeAndUserUseCase {
             name,
             status,
             color,
+            phone,
+            isWhatsapp,
+            address,
+            city,
+            state,
+            zipcode,
+            number,
             userId: createdUser.id
           })
           .returning()
