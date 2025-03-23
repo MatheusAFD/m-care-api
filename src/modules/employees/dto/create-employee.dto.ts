@@ -7,8 +7,8 @@ import {
   IsEnum,
   IsHexColor,
   IsOptional,
-  IsPostalCode,
-  IsString
+  IsString,
+  MinLength
 } from 'class-validator'
 
 import { employees, users } from '@db/drizzle/schema'
@@ -78,7 +78,8 @@ export class CreateEmployeeDTO implements CreateUserAndEmployeeInsert {
   state: string
 
   @ApiProperty()
-  @IsPostalCode('BR')
+  @IsString()
+  @MinLength(8)
   zipcode: string
 
   @ApiProperty()
