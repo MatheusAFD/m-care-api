@@ -18,6 +18,7 @@ export const employees = pgTable('employees', {
   address: text('address').notNull(),
   number: text('number').notNull(),
   zipcode: varchar('zipcode', { length: 8 }).notNull(),
+  neighborhood: text('neighborhood').notNull(),
   city: text('city').notNull(),
   state: text('state').notNull(),
   userId: varchar('user_id').unique().notNull(),

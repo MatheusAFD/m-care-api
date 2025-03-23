@@ -75,6 +75,10 @@ export class CreateEmployeeDTO implements CreateUserAndEmployeeInsert {
 
   @ApiProperty()
   @IsString()
+  neighborhood
+
+  @ApiProperty()
+  @IsString()
   state: string
 
   @ApiProperty()

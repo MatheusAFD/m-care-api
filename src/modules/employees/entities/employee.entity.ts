@@ -24,6 +24,9 @@ export class Employee implements EmployeeSelect {
   companyId: string
 
   @ApiProperty()
+  neighborhood: string
+
+  @ApiProperty()
   number: string
 
   @ApiProperty()
