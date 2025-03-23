@@ -14,7 +14,7 @@ export class User implements UserType {
 
   companyId: string
   roleId: string
-  birthday: Date | null
+  birthdate: string | null
   genre: string | null
   updatedAt: Date | null
   createdAt: Date

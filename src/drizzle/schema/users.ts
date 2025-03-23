@@ -1,5 +1,5 @@
 import { relations } from 'drizzle-orm'
-import { pgTable, varchar, text, timestamp } from 'drizzle-orm/pg-core'
+import { pgTable, varchar, text, date } from 'drizzle-orm/pg-core'
 
 import { createCustomId } from '@common/lib'
 import { timestamps } from '@common/utils'
@@ -15,7 +15,7 @@ export const users = pgTable('users', {
   password: text('password').notNull(),
   companyId: varchar('company_id').notNull(),
   roleId: varchar('role_id').notNull(),
-  birthday: timestamp('birthday'),
+  birthdate: date('birthdate'),
   genre: text('genre'),
   ...timestamps
 })
