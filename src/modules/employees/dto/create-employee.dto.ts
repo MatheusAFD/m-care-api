@@ -7,6 +7,7 @@ import {
   IsEnum,
   IsHexColor,
   IsOptional,
+  IsPostalCode,
   IsString
 } from 'class-validator'
 
@@ -54,5 +55,33 @@ export class CreateEmployeeDTO implements CreateUserAndEmployeeInsert {
   @ApiProperty()
   @IsOptional()
   @IsDate()
-  birthday?: Date | null
+  birthdate?: string | null
+
+  @ApiProperty()
+  @IsString()
+  phone: string
+
+  @ApiProperty()
+  @IsOptional()
+  isWhatsapp: boolean
+
+  @ApiProperty()
+  @IsString()
+  address: string
+
+  @ApiProperty()
+  @IsString()
+  city: string
+
+  @ApiProperty()
+  @IsString()
+  state: string
+
+  @ApiProperty()
+  @IsPostalCode('BR')
+  zipcode: string
+
+  @ApiProperty()
+  @IsString()
+  number: string
 }
