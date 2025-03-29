@@ -1,0 +1,1 @@
+export const DEFAULT_EMPLOYEE_COLOR = '#5F8D4E'
