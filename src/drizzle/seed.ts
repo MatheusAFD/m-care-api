@@ -100,7 +100,6 @@ async function main() {
       password: hashedPassword,
       companyId: createdCompany.id,
       roleId: superAdminRole[0].id,
-      birthdate: null,
       genre: 'MALE'
     })
 
