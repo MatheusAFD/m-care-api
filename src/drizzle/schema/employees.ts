@@ -1,5 +1,5 @@
 import { relations } from 'drizzle-orm'
-import { pgTable, varchar, text, boolean } from 'drizzle-orm/pg-core'
+import { pgTable, varchar, text, boolean, date } from 'drizzle-orm/pg-core'
 
 import { createCustomId } from '@common/lib'
 import { timestamps } from '@common/utils'
@@ -15,9 +15,11 @@ export const employees = pgTable('employees', {
   color: text('color').notNull(),
   phone: varchar('phone', { length: 11 }).notNull(),
   isWhatsapp: boolean('is_whatsapp').default(false),
+  birthdate: date('birthdate'),
   address: text('address').notNull(),
   number: text('number').notNull(),
   zipcode: varchar('zipcode', { length: 8 }).notNull(),
+  neighborhood: text('neighborhood').notNull(),
   city: text('city').notNull(),
   state: text('state').notNull(),
   userId: varchar('user_id').unique().notNull(),

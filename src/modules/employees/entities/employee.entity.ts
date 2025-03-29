@@ -15,6 +15,9 @@ export class Employee implements EmployeeSelect {
   status: 'INACTIVE' | 'ACTIVE'
 
   @ApiProperty()
+  birthdate: string | null
+
+  @ApiProperty()
   color: string
 
   @ApiProperty()
@@ -22,6 +25,9 @@ export class Employee implements EmployeeSelect {
 
   @ApiProperty()
   companyId: string
+
+  @ApiProperty()
+  neighborhood: string
 
   @ApiProperty()
   number: string

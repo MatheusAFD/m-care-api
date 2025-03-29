@@ -1,0 +1,1 @@
+ALTER TABLE "employees" ADD COLUMN "neighborhood" text NOT NULL;

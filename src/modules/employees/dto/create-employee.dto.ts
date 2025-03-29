@@ -13,6 +13,7 @@ import {
 
 import { employees, users } from '@db/drizzle/schema'
 
+import { DEFAULT_EMPLOYEE_COLOR } from '@common/constants'
 import { GenreEnum, StatusEnum } from '@common/enums'
 
 type CreateUserInsert = Omit<typeof users.$inferInsert, 'companyId' | 'roleId'>
@@ -34,6 +35,7 @@ export class CreateEmployeeDTO implements CreateUserAndEmployeeInsert {
 
   @ApiProperty()
   @IsString()
+  @IsOptional()
   password: string
 
   @ApiProperty()
@@ -44,7 +46,7 @@ export class CreateEmployeeDTO implements CreateUserAndEmployeeInsert {
 
   @IsHexColor()
   @ApiProperty()
-  color: string
+  color: string = DEFAULT_EMPLOYEE_COLOR
 
   @ApiProperty()
   @IsOptional()
@@ -55,15 +57,15 @@ export class CreateEmployeeDTO implements CreateUserAndEmployeeInsert {
   @ApiProperty()
   @IsOptional()
   @IsDate()
-  birthdate?: string | null
+  birthdate: string | null
 
   @ApiProperty()
   @IsString()
   phone: string
 
-  @ApiProperty()
+  @ApiProperty({ default: false })
   @IsOptional()
-  isWhatsapp: boolean
+  isWhatsapp: boolean = false
 
   @ApiProperty()
   @IsString()
@@ -72,6 +74,10 @@ export class CreateEmployeeDTO implements CreateUserAndEmployeeInsert {
   @ApiProperty()
   @IsString()
   city: string
+
+  @ApiProperty()
+  @IsString()
+  neighborhood: string
 
   @ApiProperty()
   @IsString()
