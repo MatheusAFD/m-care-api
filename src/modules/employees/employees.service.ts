@@ -5,10 +5,10 @@ import {
   NotFoundException
 } from '@nestjs/common'
 
-import { and, count, desc, eq, ilike } from 'drizzle-orm'
+import { and, count, desc, eq, getTableColumns, ilike } from 'drizzle-orm'
 
 import { DrizzleAsyncProvider } from '@db/drizzle/drizzle.provider'
-import { employees } from '@db/drizzle/schema'
+import { employees, users } from '@db/drizzle/schema'
 import { DrizzleSchema } from '@db/drizzle/types'
 
 import { ERROR_CONSTANTS } from '@common/constants'
@@ -69,9 +69,13 @@ export class EmployeesService {
 
   async findOne(companyId: string, id: string): Promise<Employee> {
     const [employee] = await this.db
-      .select()
+      .select({
+        ...getTableColumns(employees),
+        email: users.email
+      })
       .from(employees)
       .where(and(eq(employees.id, id), eq(employees.companyId, companyId)))
+      .innerJoin(users, eq(employees.userId, users.id))
       .limit(1)
 
     if (!employee) {
