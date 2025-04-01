@@ -29,6 +29,7 @@ import { CreateEmployeeDTO, UpdateEmployeeDTO } from './dto'
 import { GetEmployeesDTO } from './dto/get-employee.dto'
 import { EmployeesService } from './employees.service'
 import { Employee } from './entities/employee.entity'
+import { GetOneEmployeeResponse } from './types'
 import { CreateEmployeeAndUserUseCase } from './use-cases'
 
 @Controller('employees')
@@ -76,7 +77,7 @@ export class EmployeesController {
   findOne(
     @Param('id') id: string,
     @CurrentUser() user: AuthUser
-  ): Promise<Employee> {
+  ): Promise<GetOneEmployeeResponse> {
     return this.employeesService.findOne(user.companyId, id)
   }
 

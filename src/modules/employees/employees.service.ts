@@ -11,7 +11,7 @@ import { DrizzleAsyncProvider } from '@db/drizzle/drizzle.provider'
 import { employees, users } from '@db/drizzle/schema'
 import { DrizzleSchema } from '@db/drizzle/types'
 
-import { ERROR_CONSTANTS } from '@common/constants'
+import { DEFAULT_EMPLOYEE_COLOR, ERROR_CONSTANTS } from '@common/constants'
 import { StatusEnum } from '@common/enums'
 import { ResponseWithPagination } from '@common/types'
 import { calculatePagination, calculateQueryOffset } from '@common/utils'
@@ -19,6 +19,7 @@ import { calculatePagination, calculateQueryOffset } from '@common/utils'
 import { GetEmployeesDTO } from './dto/get-employee.dto'
 import { UpdateEmployeeDTO } from './dto/update-employee.dto'
 import { Employee } from './entities/employee.entity'
+import { GetOneEmployeeResponse } from './types'
 
 @Injectable()
 export class EmployeesService {
@@ -93,26 +94,66 @@ export class EmployeesService {
     { id, companyId }: { id: string; companyId: string },
     body: UpdateEmployeeDTO
   ): Promise<Employee> {
-    const { name, status, color } = body
+    const {
+      name,
+      email,
+      phone,
+      isWhatsapp = false,
+      status = StatusEnum.ACTIVE,
+      color = DEFAULT_EMPLOYEE_COLOR,
+      birthdate,
+      genre,
+      address,
+      neighborhood,
+      city,
+      state,
+      zipcode,
+      number
+    } = body
 
-    const employee = await this.findOne(companyId, id)
+    const response = await this.db.transaction(async (trx) => {
+      const employee = await this.findOne(companyId, id)
 
-    const [updatedEmployee] = await this.db
-      .update(employees)
-      .set({
-        name: name ?? employee.name,
-        color: color ?? employee.color,
-        status: status ?? employee.status
-      })
-      .where(and(eq(employees.id, id), eq(employees.companyId, companyId)))
-      .returning()
+      const [updatedEmployee] = await trx
+        .update(employees)
+        .set({
+          name: name ?? employee.name,
+          color: color ?? employee.color,
+          status: status ?? employee.status,
+          address: address ?? employee.address,
+          neighborhood: neighborhood ?? employee.neighborhood,
+          city: city ?? employee.city,
+          state: state ?? employee.state,
+          zipcode: zipcode ?? employee.zipcode,
+          number: number ?? employee.number,
+          phone: phone ?? employee.phone,
+          isWhatsapp: isWhatsapp ?? employee.isWhatsapp,
+          birthdate: birthdate ?? employee.birthdate
+        })
+        .where(and(eq(employees.id, id), eq(employees.companyId, companyId)))
+        .returning()
 
-    if (!updatedEmployee) {
-      throw new InternalServerErrorException(
-        ERROR_CONSTANTS.EMPLOYEE.UPDATE_FAILED
-      )
-    }
+      const [updatedUser] = await trx
+        .update(users)
+        .set({
+          email: email ?? employee.email,
+          genre: genre ?? employee.genre
+        })
+        .where(eq(users.id, employee.userId))
+        .returning()
 
-    return updatedEmployee
+      if (!updatedEmployee) {
+        throw new InternalServerErrorException(
+          ERROR_CONSTANTS.EMPLOYEE.UPDATE_FAILED
+        )
+      }
+
+      return {
+        ...updatedEmployee,
+        genre: updatedUser.genre ?? updatedUser.email
+      }
+    })
+
+    return response
   }
 }
