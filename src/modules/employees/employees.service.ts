@@ -67,11 +67,15 @@ export class EmployeesService {
     return { data, pagination }
   }
 
-  async findOne(companyId: string, id: string): Promise<Employee> {
+  async findOne(
+    companyId: string,
+    id: string
+  ): Promise<GetOneEmployeeResponse> {
     const [employee] = await this.db
       .select({
         ...getTableColumns(employees),
-        email: users.email
+        email: users.email,
+        genre: users.genre
       })
       .from(employees)
       .where(and(eq(employees.id, id), eq(employees.companyId, companyId)))
