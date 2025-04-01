@@ -6,7 +6,7 @@ import { DrizzleAsyncProvider } from '@db/drizzle/drizzle.provider'
 import { employees, roles, users } from '@db/drizzle/schema'
 import { DrizzleSchema } from '@db/drizzle/types'
 
-import { ERROR_CONSTANTS } from '@common/constants'
+import { DEFAULT_EMPLOYEE_COLOR, ERROR_CONSTANTS } from '@common/constants'
 import { RoleEnum, StatusEnum } from '@common/enums'
 import { encryptData } from '@common/lib'
 
@@ -19,25 +19,41 @@ export class CreateEmployeeAndUserUseCase {
     private readonly db: DrizzleSchema
   ) {}
 
+  async generateDefaultPassword({
+    name,
+    phone
+  }: {
+    name: string
+    phone: string
+  }): Promise<string> {
+    const [firstName, lastName] = name.split(' ')
+    const phoneLastFourDigits = phone.slice(-4)
+    const userGeneratedPassword = `${firstName}${lastName}${phoneLastFourDigits}`
+
+    const password = await encryptData(userGeneratedPassword)
+
+    return password
+  }
+
   async execute(companyId: string, body: CreateEmployeeDTO): Promise<Employee> {
     const {
       name,
       email,
-      password,
+      phone,
+      isWhatsapp = false,
       status = StatusEnum.ACTIVE,
-      color,
+      color = DEFAULT_EMPLOYEE_COLOR,
       birthdate,
       genre,
-      phone,
-      isWhatsapp,
       address,
+      neighborhood,
       city,
       state,
       zipcode,
       number
     } = body
 
-    const hashedPassword = await encryptData(password)
+    const hashedPassword = await this.generateDefaultPassword({ name, phone })
 
     const employee = await this.db.transaction(async (tx) => {
       try {
@@ -65,7 +81,6 @@ export class CreateEmployeeAndUserUseCase {
             name,
             password: hashedPassword,
             roleId: userRole.roleId,
-            birthdate,
             genre
           })
           .returning()
@@ -79,7 +94,9 @@ export class CreateEmployeeAndUserUseCase {
             color,
             phone,
             isWhatsapp,
+            birthdate,
             address,
+            neighborhood,
             city,
             state,
             zipcode,
