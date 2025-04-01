@@ -150,7 +150,8 @@ export class EmployeesService {
 
       return {
         ...updatedEmployee,
-        genre: updatedUser.genre ?? updatedUser.email
+        genre: updatedUser.genre,
+        email: updatedUser.email
       }
     })
 
