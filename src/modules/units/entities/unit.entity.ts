@@ -15,6 +15,9 @@ export class Unit implements PlanType {
   name: string
 
   @ApiProperty()
+  phone: string
+
+  @ApiProperty()
   address: string
 
   @ApiProperty()

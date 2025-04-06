@@ -12,6 +12,7 @@ export const units = pgTable('units', {
     .primaryKey()
     .$default(() => createCustomId()),
   name: text('name').notNull(),
+  phone: varchar('phone', { length: 11 }).notNull(),
   address: text('address').notNull(),
   number: text('number').notNull(),
   zipcode: varchar('zipcode', { length: 8 }).notNull(),

@@ -23,6 +23,10 @@ export class CreateUnitDTO implements createUnit {
   name: string
 
   @ApiProperty()
+  @IsString()
+  phone: string
+
+  @ApiProperty()
   @IsNotEmpty()
   @IsNumber()
   number: string
