@@ -50,7 +50,8 @@ export class CreateEmployeeAndUserUseCase {
       city,
       state,
       zipcode,
-      number
+      number,
+      unitId
     } = body
 
     const hashedPassword = await this.generateDefaultPassword({ name, phone })
@@ -101,6 +102,7 @@ export class CreateEmployeeAndUserUseCase {
             state,
             zipcode,
             number,
+            unitId,
             userId: createdUser.id
           })
           .returning()

@@ -4,7 +4,7 @@ import { pgTable, varchar, text, boolean, date } from 'drizzle-orm/pg-core'
 import { createCustomId } from '@common/lib'
 import { timestamps } from '@common/utils'
 
-import { users, companies, pgStatusEnum } from '.'
+import { users, units, companies, pgStatusEnum } from '.'
 
 export const employees = pgTable('employees', {
   id: text('id')
@@ -23,6 +23,7 @@ export const employees = pgTable('employees', {
   city: text('city').notNull(),
   state: text('state').notNull(),
   userId: varchar('user_id').unique().notNull(),
+  unitId: varchar('unit_id').notNull(),
   companyId: varchar('company_id').notNull(),
   ...timestamps
 })
@@ -35,5 +36,9 @@ export const employeesRelations = relations(employees, ({ one }) => ({
   company: one(companies, {
     fields: [employees.companyId],
     references: [companies.id]
+  }),
+  unit: one(units, {
+    fields: [employees.unitId],
+    references: [units.id]
   })
 }))

@@ -26,8 +26,17 @@ export class UnitsService {
     private readonly db: DrizzleSchema
   ) {}
 
-  async create(companyId: string, body: CreateUnitDTO) {
-    const { name, address, city, number, state, status, zipcode } = body
+  async create(companyId: string, body: CreateUnitDTO): Promise<Unit> {
+    const {
+      name,
+      address,
+      city,
+      number,
+      state,
+      neighborhood,
+      status,
+      zipcode
+    } = body
 
     const [company] = await this.db
       .select()
@@ -40,18 +49,22 @@ export class UnitsService {
     }
 
     try {
-      await this.db.insert(units).values({
-        address,
-        city,
-        companyId: company.id,
-        name,
-        number,
-        state,
-        status,
-        zipcode
-      })
+      const [unit] = await this.db
+        .insert(units)
+        .values({
+          companyId: company.id,
+          zipcode,
+          address,
+          state,
+          city,
+          neighborhood,
+          number,
+          name,
+          status
+        })
+        .returning()
 
-      return { success: true }
+      return unit
     } catch (error) {
       throw new InternalServerErrorException(error.message)
     }

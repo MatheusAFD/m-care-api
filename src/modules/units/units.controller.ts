@@ -45,7 +45,10 @@ export class UnitsController {
   @ApiBody({ type: CreateUnitDTO, required: true })
   @Roles(RoleEnum.ADMIN)
   @Post()
-  create(@CurrentUser() user: AuthUser, @Body() body: CreateUnitDTO) {
+  create(
+    @CurrentUser() user: AuthUser,
+    @Body() body: CreateUnitDTO
+  ): Promise<Unit> {
     return this.unitsService.create(user.companyId, body)
   }
 
