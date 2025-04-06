@@ -27,6 +27,10 @@ type CreateUserAndEmployeeInsert = CreateUserInsert & CreateEmployeeInsert
 export class CreateEmployeeDTO implements CreateUserAndEmployeeInsert {
   @ApiProperty()
   @IsString()
+  unitId: string
+
+  @ApiProperty()
+  @IsString()
   name: string
 
   @ApiProperty()
