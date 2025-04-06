@@ -29,6 +29,7 @@ export class UnitsService {
   async create(companyId: string, body: CreateUnitDTO): Promise<Unit> {
     const {
       name,
+      phone,
       address,
       city,
       number,
@@ -52,6 +53,8 @@ export class UnitsService {
       const [unit] = await this.db
         .insert(units)
         .values({
+          name,
+          phone,
           companyId: company.id,
           zipcode,
           address,
@@ -59,7 +62,6 @@ export class UnitsService {
           city,
           neighborhood,
           number,
-          name,
           status
         })
         .returning()

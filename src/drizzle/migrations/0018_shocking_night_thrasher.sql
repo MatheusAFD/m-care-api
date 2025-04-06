@@ -1,0 +1,1 @@
+ALTER TABLE "units" ADD COLUMN "phone" varchar(11) NOT NULL;

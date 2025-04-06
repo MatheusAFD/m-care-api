@@ -127,6 +127,13 @@
       "when": 1743972123448,
       "tag": "0017_soft_scorpion",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1743976583066,
+      "tag": "0018_shocking_night_thrasher",
+      "breakpoints": true
     }
   ]
 }
