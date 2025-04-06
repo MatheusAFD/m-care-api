@@ -6,6 +6,9 @@ type EmployeeSelect = typeof employees.$inferSelect
 
 export class Employee implements EmployeeSelect {
   @ApiProperty()
+  unitId: string
+
+  @ApiProperty()
   id: string
 
   @ApiProperty()

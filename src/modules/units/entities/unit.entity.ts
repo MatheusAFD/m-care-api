@@ -27,6 +27,9 @@ export class Unit implements PlanType {
   zipcode: string
 
   @ApiProperty()
+  neighborhood: string
+
+  @ApiProperty()
   companyId: string
 
   @ApiProperty()

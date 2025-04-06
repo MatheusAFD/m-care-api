@@ -6,8 +6,8 @@ import {
   IsNotEmpty,
   IsNumber,
   IsOptional,
-  IsPostalCode,
-  IsString
+  IsString,
+  MinLength
 } from 'class-validator'
 
 import { units } from '@db/drizzle/schema'
@@ -35,6 +35,11 @@ export class CreateUnitDTO implements createUnit {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
+  neighborhood: string
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
   city: string
 
   @ApiProperty()
@@ -43,7 +48,8 @@ export class CreateUnitDTO implements createUnit {
   state: string
 
   @ApiProperty()
-  @IsPostalCode('BR')
+  @IsString()
+  @MinLength(8)
   zipcode: string
 
   @ApiProperty()
