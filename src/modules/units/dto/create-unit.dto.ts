@@ -4,7 +4,6 @@ import { Transform } from 'class-transformer'
 import {
   IsEnum,
   IsNotEmpty,
-  IsNumber,
   IsOptional,
   IsString,
   MinLength
@@ -28,7 +27,7 @@ export class CreateUnitDTO implements createUnit {
 
   @ApiProperty()
   @IsNotEmpty()
-  @IsNumber()
+  @IsString()
   number: string
 
   @ApiProperty()
